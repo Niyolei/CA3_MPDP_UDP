@@ -1,8 +1,5 @@
 #include "RoboCatPCH.hpp"
 
-const float WORLD_HEIGHT = 720.f;
-const float WORLD_WIDTH = 1280.f;
-
 RoboCat::RoboCat() :
 	GameObject(),
 	mMaxRotationSpeed(100.f),
@@ -152,10 +149,10 @@ void RoboCat::ProcessCollisionsWithScreenWalls()
 	float radius = GetCollisionRadius();
 
 	//if the cat collides against a wall, the quick solution is to push it off
-	if ((y + radius) >= WORLD_HEIGHT && vy > 0)
+	if ((y + radius) >= kWindowSize.y && vy > 0)
 	{
 		mVelocity.mY = -vy * mWallRestitution;
-		location.mY = WORLD_HEIGHT - radius;
+		location.mY = kWindowSize.y - radius;
 		SetLocation(location);
 	}
 	else if (y - radius <= 0 && vy < 0)
@@ -165,10 +162,10 @@ void RoboCat::ProcessCollisionsWithScreenWalls()
 		SetLocation(location);
 	}
 
-	if ((x + radius) >= WORLD_WIDTH && vx > 0)
+	if ((x + radius) >= kWindowSize.x && vx > 0)
 	{
 		mVelocity.mX = -vx * mWallRestitution;
-		location.mX = WORLD_WIDTH - radius;
+		location.mX = kWindowSize.x - radius;
 		SetLocation(location);
 	}
 	else if (x - radius <= 0 && vx < 0)
