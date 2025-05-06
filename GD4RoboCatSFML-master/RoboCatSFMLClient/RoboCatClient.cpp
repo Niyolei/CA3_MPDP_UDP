@@ -100,11 +100,14 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 	if (stateBit)
 	{
 		inInputStream.Read(stateBit);
-		mThrustDir = stateBit ? 1.f : -1.f;
+		mThrustDir.mX = stateBit ? 1.f : -1.f;
+		inInputStream.Read(stateBit);
+		mThrustDir.mY = stateBit ? 1.f : -1.f;
 	}
 	else
 	{
-		mThrustDir = 0.f;
+		mThrustDir.mX = 0.f;
+		mThrustDir.mY = 0.f;
 	}
 
 	inInputStream.Read(stateBit);
