@@ -21,4 +21,8 @@
 #include "NetworkManagerClient.hpp"
 #include "Client.hpp"
 
+#include "TexturedWorld.hpp"
+
+static const sf::Vector2f kWindowSize(1920.f, 1080.f);
+
 

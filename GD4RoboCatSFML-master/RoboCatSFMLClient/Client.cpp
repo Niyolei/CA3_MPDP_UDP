@@ -10,8 +10,7 @@ bool Client::StaticInit()
 	FontManager::StaticInit();
 	TextureManager::StaticInit();
 	RenderManager::StaticInit();
-	
-
+	TexturedWorld::StaticInit();
 	HUD::StaticInit();
 
 	s_instance.reset(client);
