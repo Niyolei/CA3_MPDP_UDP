@@ -31,6 +31,7 @@
     <ClInclude Include="RoboCatClient.hpp" />
     <ClInclude Include="RoboCatClientPCH.hpp" />
     <ClInclude Include="SpriteComponent.hpp" />
+    <ClInclude Include="TexturedWorld.hpp" />
     <ClInclude Include="TextureManager.hpp" />
     <ClInclude Include="WindowManager.hpp" />
     <ClInclude Include="YarnClient.hpp" />
@@ -54,6 +55,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="SpriteComponent.cpp" />
+    <ClCompile Include="TexturedWorld.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="WindowManager.cpp" />
     <ClCompile Include="YarnClient.cpp" />

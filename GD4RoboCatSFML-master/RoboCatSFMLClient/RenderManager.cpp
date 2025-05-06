@@ -4,7 +4,7 @@ std::unique_ptr< RenderManager >	RenderManager::sInstance;
 
 RenderManager::RenderManager()
 {
-	view.reset(sf::FloatRect(0, 0, 1280, 720));
+	view.reset(sf::FloatRect(0, 0, kWindowSize.x, kWindowSize.y));
 	WindowManager::sInstance->setView(view);
 }
 
@@ -61,20 +61,21 @@ void RenderManager::RenderComponents()
 	}
 }
 
+void RenderManager::RenderTexturedWorld()
+{
+	for (auto spr : TexturedWorld::sInstance->getTexturedWorld())
+	{
+		WindowManager::sInstance->draw(spr);
+	}
+}
+
 void RenderManager::Render()
 {
-	//
 	// Clear the back buffer
-	//
-	WindowManager::sInstance->clear(sf::Color(100, 149, 237, 255));
+	WindowManager::sInstance->clear(sf::Color(100, 149, 237, 255));	
 
+	RenderManager::sInstance->RenderTexturedWorld();
 	RenderManager::sInstance->RenderComponents();
-
-	HUD::sInstance->Render();
-
-	//
-	// Present our back buffer to our front buffer
-	//
-	WindowManager::sInstance->display();
-
+	HUD::sInstance->Render();	
+	WindowManager::sInstance->display();	
 }

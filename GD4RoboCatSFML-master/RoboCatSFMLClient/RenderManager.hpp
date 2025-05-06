@@ -9,6 +9,7 @@ public:
 
 	void Render();
 	void RenderComponents();
+	void RenderTexturedWorld();
 
 	//vert inefficient method of tracking scene graph...
 	void AddComponent(SpriteComponent* inComponent);

@@ -12,6 +12,19 @@ TextureManager::TextureManager()
 	CacheTexture("cat", "../Assets/cat.png");
 	CacheTexture("mouse", "../Assets/mouse.png");
 	CacheTexture("yarn", "../Assets/yarn.png");
+	CacheTexture("snowTile", "../MediaFiles/Textures/Environment/SnowTile_64x64.png");
+	CacheTexture("lakeTile", "../MediaFiles/Textures/Environment/LakeTile_64x64.png");
+	CacheTexture("greenTree", "../MediaFiles/Textures/Tree/GreenTree_64x64.png");
+	
+
+	/*m_textures.Load(TextureID::kCharacterMovement, "MediaFiles/Textures/Character/CharacterMovementSheet.png");
+	m_textures.Load(TextureID::kSnowball, "MediaFiles/Textures/Weapon/Snowball.png");
+	m_textures.Load(TextureID::kSnowTile, "MediaFiles/Textures/Environment/SnowTile_64x64.png");
+	m_textures.Load(TextureID::kLakeTile, "MediaFiles/Textures/Environment/LakeTile_64x64.png");
+	m_textures.Load(TextureID::kPurpleTree, "MediaFiles/Textures/Tree/PurpleTree_64x64.png");
+	m_textures.Load(TextureID::kGreenTree, "MediaFiles/Textures/Tree/GreenTree_64x64.png");
+	m_textures.Load(TextureID::kDeadTree, "MediaFiles/Textures/Tree/DeadTree_64x64.png");*/
+
 }
 
 TexturePtr	TextureManager::GetTexture(const string& inTextureName)
