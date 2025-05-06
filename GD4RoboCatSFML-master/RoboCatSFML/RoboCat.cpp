@@ -10,7 +10,7 @@ RoboCat::RoboCat() :
 	mVelocity(Vector3::Zero),
 	mWallRestitution(0.1f),
 	mCatRestitution(0.1f),
-	mThrustDir(0.f),
+	mThrustDir(0.f, 0.f, 0.f),
 	mPlayerId(0),
 	mIsShooting(false),
 	mHealth(10)
@@ -22,13 +22,16 @@ void RoboCat::ProcessInput(float inDeltaTime, const InputState& inInputState)
 {
 	//process our input....
 
-	//turning...
-	float newRotation = GetRotation() + inInputState.GetDesiredHorizontalDelta() * mMaxRotationSpeed * inDeltaTime;
-	SetRotation(newRotation);
+	////turning...
+	//float newRotation = GetRotation() + inInputState.GetDesiredHorizontalDelta() * mMaxRotationSpeed * inDeltaTime;
+	//SetRotation(newRotation);
 
 	//moving...
 	float inputForwardDelta = inInputState.GetDesiredVerticalDelta();
-	mThrustDir = inputForwardDelta;
+	mThrustDir.mY = inputForwardDelta * -1;
+
+	float inputRightDelta = inInputState.GetDesiredHorizontalDelta();
+	mThrustDir.mX = inputRightDelta;
 
 
 	mIsShooting = inInputState.IsShooting();
@@ -39,8 +42,11 @@ void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
 {
 	//just set the velocity based on the thrust direction -- no thrust will lead to 0 velocity
 	//simulating acceleration makes the client prediction a bit more complex
-	Vector3 forwardVector = GetForwardVector();
-	mVelocity = forwardVector * (mThrustDir * inDeltaTime * mMaxLinearSpeed);
+	//Vector3 forwardVector = GetForwardVector();
+	//mVelocity = forwardVector * (mThrustDir.mY * inDeltaTime * mMaxLinearSpeed);
+
+	mVelocity.mX = mThrustDir.mX * inDeltaTime * mMaxLinearSpeed;
+	mVelocity.mY = mThrustDir.mY * inDeltaTime * mMaxLinearSpeed;
 }
 
 void RoboCat::SimulateMovement(float inDeltaTime)
@@ -212,10 +218,11 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 	}
 
 	//always write mThrustDir- it's just two bits
-	if (mThrustDir != 0.f)
+	if (mThrustDir.mY != 0.f || mThrustDir.mX != 0.f)
 	{
 		inOutputStream.Write(true);
-		inOutputStream.Write(mThrustDir > 0.f);
+		inOutputStream.Write(mThrustDir.mX > 0.f);
+		inOutputStream.Write(mThrustDir.mY > 0.f);
 	}
 	else
 	{
