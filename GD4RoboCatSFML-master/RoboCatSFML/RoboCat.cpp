@@ -15,6 +15,24 @@ RoboCat::RoboCat() :
 	SetCollisionRadius(60.f);
 }
 
+void RoboCat::UpdateFacingVector()
+{
+	if (mThrustDir.mX != 0 && mThrustDir.mY != 0)
+	{
+		Vector3 vector = mThrustDir;
+		vector.Normalize2D();
+		mFacingVector = vector;
+	}
+	else if (mThrustDir.mX != 0)
+	{
+		mFacingVector = Vector3(mThrustDir.mX, 0.f, 0.f);
+	}
+	else if (mThrustDir.mY != 0)
+	{
+		mFacingVector = Vector3(0.f, mThrustDir.mY, 0.f);
+	}
+}
+
 void RoboCat::ProcessInput(float inDeltaTime, const InputState& inInputState)
 {
 	//process our input....
@@ -33,6 +51,7 @@ void RoboCat::ProcessInput(float inDeltaTime, const InputState& inInputState)
 
 	mIsShooting = inInputState.IsShooting();
 
+	UpdateFacingVector();
 }
 
 void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
@@ -41,9 +60,16 @@ void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
 	//simulating acceleration makes the client prediction a bit more complex
 	//Vector3 forwardVector = GetForwardVector();
 	//mVelocity = forwardVector * (mThrustDir.mY * inDeltaTime * mMaxLinearSpeed);
-
-	mVelocity.mX = mThrustDir.mX * inDeltaTime * mMaxLinearSpeed;
-	mVelocity.mY = mThrustDir.mY * inDeltaTime * mMaxLinearSpeed;
+	
+	//--------------------------------------------------------------------------------Change this to Acceleration--------------------------------------
+	if (mThrustDir.Length2D() != 0)
+	{
+		mVelocity = mFacingVector * (inDeltaTime * mMaxLinearSpeed);
+	}
+	else
+	{
+		mVelocity = Vector3::Zero;
+	}
 }
 
 void RoboCat::SimulateMovement(float inDeltaTime)
@@ -54,6 +80,12 @@ void RoboCat::SimulateMovement(float inDeltaTime)
 	SetLocation(GetLocation() + mVelocity * inDeltaTime);
 
 	ProcessCollisions();
+}
+
+
+Vector3 RoboCat::GetFacingVector() const
+{
+	return mFacingVector;
 }
 
 void RoboCat::Update()
