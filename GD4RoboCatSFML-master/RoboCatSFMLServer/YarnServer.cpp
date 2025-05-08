@@ -31,6 +31,8 @@ bool YarnServer::HandleCollisionWithCat(RoboCat* inCat)
 		//kill yourself!
 		SetDoesWantToDie(true);
 
+		inCat->HandleYarnCollision(mVelocity);
+
 		static_cast<RoboCatServer*>(inCat)->TakeDamage(GetPlayerId());
 
 	}

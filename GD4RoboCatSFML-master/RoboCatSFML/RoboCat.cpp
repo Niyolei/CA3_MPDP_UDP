@@ -2,17 +2,23 @@
 
 RoboCat::RoboCat() :
 	GameObject(),
-	mMaxRotationSpeed(100.f),
-	mMaxLinearSpeed(5000.f),
+	mMaxLinearSpeed(400.f),
 	mVelocity(Vector3::Zero),
+	mFacingVector(Vector3::Zero),
+	mAccelerationMultiplier(0.26f),
+	mDecelerationMultiplier(0.22f),
+	mAccelerationValue(mMaxLinearSpeed * mAccelerationMultiplier),
+	mDecelerationValue(mMaxLinearSpeed * mDecelerationMultiplier),
+	mVelocityCutoffValue(0.2f),
 	mWallRestitution(0.1f),
-	mCatRestitution(0.1f),
+	mCatRestitution(0.8f),
+	mYarnRestitution(0.2f),
 	mThrustDir(0.f, 0.f, 0.f),
 	mPlayerId(0),
 	mIsShooting(false),
 	mHealth(10)
 {
-	SetCollisionRadius(60.f);
+	SetCollisionRadius(50.f);
 }
 
 void RoboCat::UpdateFacingVector()
@@ -64,7 +70,26 @@ void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
 	//--------------------------------------------------------------------------------Change this to Acceleration--------------------------------------
 	if (mThrustDir.Length2D() != 0)
 	{
-		mVelocity = mFacingVector * (inDeltaTime * mMaxLinearSpeed);
+
+		Vector3 velocityIncrease = mFacingVector * (inDeltaTime * mAccelerationValue);
+
+		mVelocity += velocityIncrease;
+	}
+
+
+	if (mVelocity.Length2D() > mVelocityCutoffValue)
+	{
+		Vector3 moveVector = Vector3(1 - abs(mThrustDir.mX), 1 - abs(mThrustDir.mY), 0);
+
+		moveVector = moveVector * mVelocity;
+
+		if (moveVector.Length2D() != 0)
+		{
+			moveVector.Normalize2D();
+		}
+
+		Vector3 velocityDecrease = moveVector * (inDeltaTime * mDecelerationValue);
+		mVelocity -= velocityDecrease;
 	}
 	else
 	{
@@ -152,12 +177,16 @@ void RoboCat::ProcessCollisions()
 
 						if (targetCat)
 						{
-							mVelocity -= impulse;
+							mVelocity = impulse * -0.7f;
 							mVelocity *= mCatRestitution;
+
+							targetCat->mVelocity = impulse * 0.3f;
+							targetCat->mVelocity *= targetCat->mCatRestitution;
+
 						}
 						else
 						{
-							mVelocity -= impulse * 2.f;
+							mVelocity -= impulse;
 							mVelocity *= mWallRestitution;
 						}
 
@@ -208,6 +237,11 @@ void RoboCat::ProcessCollisionsWithScreenWalls()
 	}
 }
 
+void RoboCat::HandleYarnCollision(Vector3 yarnVelocity) {
+	//This defyes physics however the yarn should stop the cat for gameplay reasons
+	mVelocity = yarnVelocity * mYarnRestitution;
+}
+
 uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const
 {
 	uint32_t writtenState = 0;
@@ -236,8 +270,6 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 		Vector3 location = GetLocation();
 		inOutputStream.Write(location.mX);
 		inOutputStream.Write(location.mY);
-
-		inOutputStream.Write(GetRotation());
 
 		writtenState |= ECRS_Pose;
 	}

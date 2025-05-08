@@ -24,10 +24,6 @@ void YarnClient::Read(InputMemoryBitStream& inInputStream)
 		inInputStream.Read(velocity.mX);
 		inInputStream.Read(velocity.mY);
 		SetVelocity(velocity);
-
-		float rotation;
-		inInputStream.Read(rotation);
-		SetRotation(rotation);
 	}
 
 

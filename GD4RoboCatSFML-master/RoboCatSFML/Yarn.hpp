@@ -34,7 +34,7 @@ public:
 protected:
 	Yarn();
 	Vector3		mVelocity;
-	float		mMuzzleSpeed;
+	float		mMaxSpeed;
 	int			mPlayerId;
 
 };
