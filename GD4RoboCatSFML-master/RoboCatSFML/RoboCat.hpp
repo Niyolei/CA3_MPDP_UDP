@@ -29,6 +29,8 @@ public:
 	void ProcessCollisions();
 	void ProcessCollisionsWithScreenWalls();
 
+	void HandleYarnCollision(Vector3 yarnVelocity);
+
 	void		SetPlayerId(uint32_t inPlayerId) { mPlayerId = inPlayerId; }
 	uint32_t	GetPlayerId()						const { return mPlayerId; }
 
@@ -63,7 +65,7 @@ private:
 	//bounce fraction when hitting various things
 	float				mWallRestitution;
 	float				mCatRestitution;
-
+	float 				mYarnRestitution;
 
 	uint32_t			mPlayerId;
 
@@ -77,6 +79,7 @@ protected:
 	int					mHealth;
 
 	bool				mIsShooting;
+
 };
 
 typedef shared_ptr< RoboCat >	RoboCatPtr;

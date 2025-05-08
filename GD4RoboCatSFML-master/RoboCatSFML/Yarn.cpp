@@ -1,7 +1,7 @@
 #include "RoboCatPCH.hpp"
 
 Yarn::Yarn() :
-	mMuzzleSpeed(300.f),
+	mMaxSpeed(600.f),
 	mVelocity(Vector3::Zero),
 	mPlayerId(0)
 {
@@ -26,8 +26,6 @@ uint32_t Yarn::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyStat
 		Vector3 velocity = GetVelocity();
 		inOutputStream.Write(velocity.mX);
 		inOutputStream.Write(velocity.mY);
-
-		inOutputStream.Write(GetRotation());
 
 		writtenState |= EYRS_Pose;
 	}
@@ -83,7 +81,7 @@ void Yarn::InitFromShooter(RoboCat* inShooter)
 	/*Vector3 forward = inShooter->GetForwardVector();
 	SetVelocity(inShooter->GetVelocity() + forward * mMuzzleSpeed);*/
 
-	SetVelocity(inShooter->GetFacingVector() * 200);
+	SetVelocity(inShooter->GetFacingVector() * mMaxSpeed);
 	SetLocation(inShooter->GetLocation() /* + forward * 0.55f */);
 
 	SetRotation(inShooter->GetRotation());
