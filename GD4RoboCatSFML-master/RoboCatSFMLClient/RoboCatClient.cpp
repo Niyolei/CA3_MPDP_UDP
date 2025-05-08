@@ -102,7 +102,6 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 		mThrustDir.mX = stateBit ? 1.f : -1.f;
 		inInputStream.Read(stateBit);
 		mThrustDir.mY = stateBit ? 1.f : -1.f;
-		UpdateFacingVector();
 	}
 	else
 	{

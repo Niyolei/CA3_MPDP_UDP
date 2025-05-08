@@ -33,13 +33,14 @@ sf::Sprite& PlayerSpriteComponent::GetSprite()
 void PlayerSpriteComponent::Update(sf::Time dt)
 {
 	UpdateWalkingAnimation(dt);
-	mAnimation.Update(dt);
+	//mAnimation.Update(dt);
 }
 
 void PlayerSpriteComponent::UpdateWalkingAnimation(sf::Time dt)
 {
 	const Vector3& dir = mPlayer->GetFacingVector();
-	bool isMoving = mPlayer->GetVelocity().mX != 0 || mPlayer->GetVelocity().mY != 0;
+	Vector3 velocity = mPlayer->GetVelocity();
+	bool isMoving = velocity.Length2D() > mPlayer->GetVelocityCutoffValue();
 
 	if (isMoving)
 	{
@@ -63,22 +64,21 @@ void PlayerSpriteComponent::UpdateWalkingAnimation(sf::Time dt)
 		{
 			mLastDirection = FacingDirection::kLeft;
 		}
+
+		// facing direction to row
+		switch (mLastDirection)
+		{
+		case FacingDirection::kDown:		mAnimation.SetRow(0); break;
+		case FacingDirection::kDownLeft:	mAnimation.SetRow(1); break;
+		case FacingDirection::kDownRight:	mAnimation.SetRow(2); break;
+		case FacingDirection::kLeft:		mAnimation.SetRow(3); break;
+		case FacingDirection::kRight:		mAnimation.SetRow(4); break;
+		case FacingDirection::kUp:			mAnimation.SetRow(5); break;
+		case FacingDirection::kUpLeft:		mAnimation.SetRow(6); break;
+		case FacingDirection::kUpRight:		mAnimation.SetRow(7); break;
+		}
 	}
 
-	// facing direction to row
-	switch (mLastDirection)
-	{
-	case FacingDirection::kDown:		mAnimation.SetRow(0); break;
-	case FacingDirection::kDownLeft:	mAnimation.SetRow(1); break;
-	case FacingDirection::kDownRight:	mAnimation.SetRow(2); break;
-	case FacingDirection::kLeft:		mAnimation.SetRow(3); break;
-	case FacingDirection::kRight:		mAnimation.SetRow(4); break;
-	case FacingDirection::kUp:			mAnimation.SetRow(5); break;
-	case FacingDirection::kUpLeft:		mAnimation.SetRow(6); break;
-	case FacingDirection::kUpRight:		mAnimation.SetRow(7); break;
-	}
-
-	
 	if (isMoving)
 	{
 		mAnimation.Update(dt);

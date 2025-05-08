@@ -5,11 +5,11 @@ RoboCat::RoboCat() :
 	mMaxLinearSpeed(400.f),
 	mVelocity(Vector3::Zero),
 	mFacingVector(Vector3::Zero),
-	mAccelerationMultiplier(0.26f),
+	mAccelerationMultiplier(0.35f),
 	mDecelerationMultiplier(0.22f),
 	mAccelerationValue(mMaxLinearSpeed * mAccelerationMultiplier),
 	mDecelerationValue(mMaxLinearSpeed * mDecelerationMultiplier),
-	mVelocityCutoffValue(0.2f),
+	mVelocityCutoffValue(0.8f),
 	mWallRestitution(0.1f),
 	mCatRestitution(0.8f),
 	mYarnRestitution(0.2f),
@@ -68,7 +68,7 @@ void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
 	//mVelocity = forwardVector * (mThrustDir.mY * inDeltaTime * mMaxLinearSpeed);
 	
 	//--------------------------------------------------------------------------------Change this to Acceleration--------------------------------------
-	if (mThrustDir.Length2D() != 0)
+	if (mThrustDir.mX != 0 || mThrustDir.mY != 0)
 	{
 
 		Vector3 velocityIncrease = mFacingVector * (inDeltaTime * mAccelerationValue);
@@ -77,7 +77,7 @@ void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
 	}
 
 
-	if (mVelocity.Length2D() > mVelocityCutoffValue)
+	if (abs(mVelocity.mX) > mVelocityCutoffValue || abs(mVelocity.mY) > mVelocityCutoffValue)
 	{
 		Vector3 moveVector = Vector3(1 - abs(mThrustDir.mX), 1 - abs(mThrustDir.mY), 0);
 
@@ -90,8 +90,17 @@ void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
 
 		Vector3 velocityDecrease = moveVector * (inDeltaTime * mDecelerationValue);
 		mVelocity -= velocityDecrease;
+
+		if (abs(mVelocity.mX) < mVelocityCutoffValue)
+		{
+			mVelocity.mX = 0;
+		}
+		if (abs(mVelocity.mY) < mVelocityCutoffValue)
+		{
+			mVelocity.mY = 0;
+		}
 	}
-	else
+	else if (mThrustDir.mX == 0 && mThrustDir.mY == 0)
 	{
 		mVelocity = Vector3::Zero;
 	}

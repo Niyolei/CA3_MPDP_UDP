@@ -31,6 +31,8 @@ public:
 
 	void HandleYarnCollision(Vector3 yarnVelocity);
 
+	float GetVelocityCutoffValue() const { return mVelocityCutoffValue; }
+
 	void		SetPlayerId(uint32_t inPlayerId) { mPlayerId = inPlayerId; }
 	uint32_t	GetPlayerId()						const { return mPlayerId; }
 
