@@ -3,8 +3,15 @@
 RoboCat::RoboCat() :
 	GameObject(),
 	mMaxRotationSpeed(100.f),
-	mMaxLinearSpeed(5000.f),
+	mMaxLinearSpeed(3000.f),
 	mVelocity(Vector3::Zero),
+	mFacingVector(Vector3::Zero),
+	mAccelerationMultiplier(0.07f),
+	mDecelerationMultiplier(0.05f),
+	mAccelarationValue(mMaxLinearSpeed * mAccelerationMultiplier),
+	mDecelerationValue(mMaxLinearSpeed * mDecelerationMultiplier),
+	mVelocityCutoffValue(0.2f),
+	mCurrentSpeed(0.f),
 	mWallRestitution(0.1f),
 	mCatRestitution(0.1f),
 	mThrustDir(0.f, 0.f, 0.f),
@@ -64,10 +71,41 @@ void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
 	//--------------------------------------------------------------------------------Change this to Acceleration--------------------------------------
 	if (mThrustDir.Length2D() != 0)
 	{
-		mVelocity = mFacingVector * (inDeltaTime * mMaxLinearSpeed);
+		mCurrentSpeed += mAccelarationValue;
+		if (mCurrentSpeed > mMaxLinearSpeed)
+		{
+			mCurrentSpeed = mMaxLinearSpeed;
+		}
+
+		Vector3 velocityIncrease = mFacingVector * (inDeltaTime * mAccelarationValue);
+
+		mVelocity += velocityIncrease;
+	}
+
+
+	if (mVelocity.Length2D() > mVelocityCutoffValue)
+	{
+		Vector3 moveVector = Vector3(1 - abs(mThrustDir.mX), 1 - abs(mThrustDir.mY), 0);
+
+		moveVector = moveVector * mVelocity;
+
+		if (moveVector.Length2D() != 0)
+		{
+			moveVector.Normalize2D();
+		}
+
+		mCurrentSpeed -= mDecelerationMultiplier;
+		if (mCurrentSpeed < 0)
+		{
+			mCurrentSpeed = 0;
+		}
+
+		Vector3 velocityDecrease = moveVector * (inDeltaTime * mDecelerationValue);
+		mVelocity -= velocityDecrease;
 	}
 	else
 	{
+		mCurrentSpeed = 0;
 		mVelocity = Vector3::Zero;
 	}
 }
