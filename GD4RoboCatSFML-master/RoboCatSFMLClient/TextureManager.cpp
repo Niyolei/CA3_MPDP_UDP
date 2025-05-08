@@ -17,6 +17,10 @@ TextureManager::TextureManager()
 	CacheTexture("greenTree", "../MediaFiles/Textures/Tree/GreenTree_64x64.png");
 	
 
+	//character textures
+	CacheTexture("character", "../MediaFiles/Textures/Character/CharacterMovementSheet.png");
+
+
 	/*m_textures.Load(TextureID::kCharacterMovement, "MediaFiles/Textures/Character/CharacterMovementSheet.png");
 	m_textures.Load(TextureID::kSnowball, "MediaFiles/Textures/Weapon/Snowball.png");
 	m_textures.Load(TextureID::kSnowTile, "MediaFiles/Textures/Environment/SnowTile_64x64.png");

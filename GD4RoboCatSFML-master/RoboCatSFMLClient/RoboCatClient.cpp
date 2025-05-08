@@ -5,7 +5,9 @@ RoboCatClient::RoboCatClient() :
 	mTimeVelocityBecameOutOfSync(0.f)
 {
 	mSpriteComponent.reset(new PlayerSpriteComponent(this));
-	mSpriteComponent->SetTexture(TextureManager::sInstance->GetTexture("cat"));
+	mSpriteComponent->SetTexture(TextureManager::sInstance->GetTexture("character"));
+	sf::IntRect rect(0, 0, 38, 42);
+	mSpriteComponent->GetSprite().setTextureRect(rect);
 }
 
 void RoboCatClient::HandleDying()
