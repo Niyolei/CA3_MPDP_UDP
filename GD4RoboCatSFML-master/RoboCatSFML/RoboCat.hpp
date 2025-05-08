@@ -50,7 +50,7 @@ private:
 
 
 	float				mMaxLinearSpeed;
-	float               mCurrentSpeed;
+
 	float 			    mAccelerationMultiplier;
 	float 			    mDecelerationMultiplier;
 
@@ -59,7 +59,6 @@ private:
 
 	float				mVelocityCutoffValue;
 
-	float				mMaxRotationSpeed;
 
 	//bounce fraction when hitting various things
 	float				mWallRestitution;

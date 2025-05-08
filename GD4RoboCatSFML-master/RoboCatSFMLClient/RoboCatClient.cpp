@@ -90,9 +90,6 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 
 		SetLocation(replicatedLocation);
 
-		inInputStream.Read(replicatedRotation);
-		SetRotation(replicatedRotation);
-
 		readState |= ECRS_Pose;
 	}
 

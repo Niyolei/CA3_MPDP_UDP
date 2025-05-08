@@ -2,7 +2,6 @@
 
 RoboCat::RoboCat() :
 	GameObject(),
-	mMaxRotationSpeed(100.f),
 	mMaxLinearSpeed(400.f),
 	mVelocity(Vector3::Zero),
 	mFacingVector(Vector3::Zero),
@@ -11,7 +10,6 @@ RoboCat::RoboCat() :
 	mAccelerationValue(mMaxLinearSpeed * mAccelerationMultiplier),
 	mDecelerationValue(mMaxLinearSpeed * mDecelerationMultiplier),
 	mVelocityCutoffValue(0.2f),
-	mCurrentSpeed(0.f),
 	mWallRestitution(0.1f),
 	mCatRestitution(0.8f),
 	mThrustDir(0.f, 0.f, 0.f),
@@ -71,11 +69,6 @@ void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
 	//--------------------------------------------------------------------------------Change this to Acceleration--------------------------------------
 	if (mThrustDir.Length2D() != 0)
 	{
-		mCurrentSpeed += mAccelerationValue;
-		if (mCurrentSpeed > mMaxLinearSpeed)
-		{
-			mCurrentSpeed = mMaxLinearSpeed;
-		}
 
 		Vector3 velocityIncrease = mFacingVector * (inDeltaTime * mAccelerationValue);
 
@@ -94,18 +87,11 @@ void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
 			moveVector.Normalize2D();
 		}
 
-		mCurrentSpeed -= mDecelerationMultiplier;
-		if (mCurrentSpeed < 0)
-		{
-			mCurrentSpeed = 0;
-		}
-
 		Vector3 velocityDecrease = moveVector * (inDeltaTime * mDecelerationValue);
 		mVelocity -= velocityDecrease;
 	}
 	else
 	{
-		mCurrentSpeed = 0;
 		mVelocity = Vector3::Zero;
 	}
 }
@@ -278,8 +264,6 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 		Vector3 location = GetLocation();
 		inOutputStream.Write(location.mX);
 		inOutputStream.Write(location.mY);
-
-		inOutputStream.Write(GetRotation());
 
 		writtenState |= ECRS_Pose;
 	}
