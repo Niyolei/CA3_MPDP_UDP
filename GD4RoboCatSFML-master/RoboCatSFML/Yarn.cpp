@@ -80,8 +80,10 @@ void Yarn::InitFromShooter(RoboCat* inShooter)
 	SetColor(inShooter->GetColor());
 	SetPlayerId(inShooter->GetPlayerId());
 
-	Vector3 forward = inShooter->GetForwardVector();
-	SetVelocity(inShooter->GetVelocity() + forward * mMuzzleSpeed);
+	/*Vector3 forward = inShooter->GetForwardVector();
+	SetVelocity(inShooter->GetVelocity() + forward * mMuzzleSpeed);*/
+
+	SetVelocity(inShooter->GetFacingVector() * 200);
 	SetLocation(inShooter->GetLocation() /* + forward * 0.55f */);
 
 	SetRotation(inShooter->GetRotation());

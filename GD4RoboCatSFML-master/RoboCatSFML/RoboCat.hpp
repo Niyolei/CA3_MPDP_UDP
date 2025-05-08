@@ -13,6 +13,7 @@ public:
 		ECRS_AllState = ECRS_Pose | ECRS_Color | ECRS_PlayerId | ECRS_Health
 	};
 
+	Vector3 GetFacingVector() const;
 
 	static	GameObject* StaticCreate() { return new RoboCat(); }
 
@@ -38,6 +39,7 @@ public:
 
 protected:
 	RoboCat();
+	void UpdateFacingVector();
 
 private:
 
@@ -62,7 +64,7 @@ protected:
 	///move down here for padding reasons...
 
 	float				mLastMoveTimestamp;
-
+	Vector3				mFacingVector;
 	Vector3				mThrustDir;
 	int					mHealth;
 
