@@ -3,23 +3,23 @@
 RoboCat::RoboCat() :
 	GameObject(),
 	mMaxRotationSpeed(100.f),
-	mMaxLinearSpeed(3000.f),
+	mMaxLinearSpeed(400.f),
 	mVelocity(Vector3::Zero),
 	mFacingVector(Vector3::Zero),
-	mAccelerationMultiplier(0.07f),
-	mDecelerationMultiplier(0.05f),
+	mAccelerationMultiplier(0.26f),
+	mDecelerationMultiplier(0.22f),
 	mAccelerationValue(mMaxLinearSpeed * mAccelerationMultiplier),
 	mDecelerationValue(mMaxLinearSpeed * mDecelerationMultiplier),
 	mVelocityCutoffValue(0.2f),
 	mCurrentSpeed(0.f),
 	mWallRestitution(0.1f),
-	mCatRestitution(0.1f),
+	mCatRestitution(0.8f),
 	mThrustDir(0.f, 0.f, 0.f),
 	mPlayerId(0),
 	mIsShooting(false),
 	mHealth(10)
 {
-	SetCollisionRadius(60.f);
+	SetCollisionRadius(50.f);
 }
 
 void RoboCat::UpdateFacingVector()
@@ -190,12 +190,16 @@ void RoboCat::ProcessCollisions()
 
 						if (targetCat)
 						{
-							mVelocity -= impulse;
+							mVelocity = impulse * -0.7f;
 							mVelocity *= mCatRestitution;
+
+							targetCat->mVelocity = impulse * 0.3f;
+							targetCat->mVelocity *= targetCat->mCatRestitution;
+
 						}
 						else
 						{
-							mVelocity -= impulse * 2.f;
+							mVelocity -= impulse;
 							mVelocity *= mWallRestitution;
 						}
 
