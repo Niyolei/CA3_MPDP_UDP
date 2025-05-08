@@ -8,7 +8,7 @@ RoboCat::RoboCat() :
 	mFacingVector(Vector3::Zero),
 	mAccelerationMultiplier(0.07f),
 	mDecelerationMultiplier(0.05f),
-	mAccelarationValue(mMaxLinearSpeed * mAccelerationMultiplier),
+	mAccelerationValue(mMaxLinearSpeed * mAccelerationMultiplier),
 	mDecelerationValue(mMaxLinearSpeed * mDecelerationMultiplier),
 	mVelocityCutoffValue(0.2f),
 	mCurrentSpeed(0.f),
@@ -71,13 +71,13 @@ void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
 	//--------------------------------------------------------------------------------Change this to Acceleration--------------------------------------
 	if (mThrustDir.Length2D() != 0)
 	{
-		mCurrentSpeed += mAccelarationValue;
+		mCurrentSpeed += mAccelerationValue;
 		if (mCurrentSpeed > mMaxLinearSpeed)
 		{
 			mCurrentSpeed = mMaxLinearSpeed;
 		}
 
-		Vector3 velocityIncrease = mFacingVector * (inDeltaTime * mAccelarationValue);
+		Vector3 velocityIncrease = mFacingVector * (inDeltaTime * mAccelerationValue);
 
 		mVelocity += velocityIncrease;
 	}

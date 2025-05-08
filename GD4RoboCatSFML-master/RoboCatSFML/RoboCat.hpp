@@ -54,7 +54,7 @@ private:
 	float 			    mAccelerationMultiplier;
 	float 			    mDecelerationMultiplier;
 
-	float				mAccelarationValue;
+	float				mAccelerationValue;
 	float				mDecelerationValue;
 
 	float				mVelocityCutoffValue;
