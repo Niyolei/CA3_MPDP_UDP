@@ -54,6 +54,12 @@ int RenderManager::GetComponentIndex(SpriteComponent* inComponent) const
 //render the cameras in order
 void RenderManager::RenderComponents()
 {
+
+	sf::Time dt = sf::seconds(Timing::sInstance.GetDeltaTime());
+	for (SpriteComponent* c : mComponents)
+	{
+		c->Update(dt);
+	}
 	//Get the logical viewport so we can pass this to the SpriteComponents when it's draw time
 	for (SpriteComponent* c : mComponents)
 	{	

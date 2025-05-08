@@ -3,9 +3,13 @@
 #include "SFML\Graphics.hpp"
 
 #include "InputManager.hpp"
+
 #include "SpriteComponent.hpp"
-#include "PlayerSpriteComponent.hpp"
 #include "TextureManager.hpp"
+#include "CharacterAnimation.hpp"
+#include "PlayerSpriteComponent.hpp"
+
+
 #include "FontManager.hpp"
 #include "RenderManager.hpp"
 #include "WindowManager.hpp"
@@ -22,5 +26,6 @@
 #include "Client.hpp"
 
 #include "TexturedWorld.hpp"
+
 
 

@@ -12,7 +12,7 @@ public:
 	void SetTexture(TexturePtr inTexture);
 	virtual sf::Sprite& GetSprite();
 	
-
+	virtual void Update(sf::Time dt);
 
 protected:
 

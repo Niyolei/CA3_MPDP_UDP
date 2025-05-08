@@ -33,3 +33,8 @@ sf::Sprite& SpriteComponent::GetSprite()
 	return m_sprite;
 }
 
+void SpriteComponent::Update(sf::Time dt)
+{
+
+}
+

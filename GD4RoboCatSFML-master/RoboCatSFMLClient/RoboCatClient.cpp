@@ -6,7 +6,6 @@ RoboCatClient::RoboCatClient() :
 {
 	mSpriteComponent.reset(new PlayerSpriteComponent(this));
 	mSpriteComponent->SetTexture(TextureManager::sInstance->GetTexture("character"));
-	//set a int rect to get the specific from the sprite sheet
 	sf::IntRect rect(0, 0, 38, 42);
 	mSpriteComponent->GetSprite().setTextureRect(rect);
 }
