@@ -93,4 +93,4 @@ class GameObject;
 #include "Engine.hpp"
 
 static const sf::Vector2f kWindowSize(1920.f, 1080.f);
-static const float kBorderDistance = 65.f;
+static const float kBorderDistance = 55.f;

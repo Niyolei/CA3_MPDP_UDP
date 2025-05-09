@@ -16,10 +16,10 @@ RoboCat::RoboCat() :
 	mThrustDir(0.f, 0.f, 0.f),
 	mPlayerId(0),
 	mIsShooting(false),
-	mHealth(3),
 	mMaxHealth(3),
-	mAmmo(0),
-	mMaxAmmo(5)
+	mMaxAmmo(5),
+	mHealth(mMaxHealth),
+	mAmmo(mMaxAmmo)
 {
 	SetCollisionRadius(15.f);
 }
