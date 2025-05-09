@@ -12,13 +12,21 @@ TextureManager::TextureManager()
 	CacheTexture("cat", "../Assets/cat.png");
 	CacheTexture("mouse", "../Assets/mouse.png");
 	CacheTexture("yarn", "../Assets/yarn.png");
+
+	//environment textures
 	CacheTexture("snowTile", "../MediaFiles/Textures/Environment/SnowTile_64x64.png");
 	CacheTexture("lakeTile", "../MediaFiles/Textures/Environment/LakeTile_64x64.png");
-	CacheTexture("greenTree", "../MediaFiles/Textures/Tree/GreenTree_64x64.png");
-	
+	CacheTexture("greenTree", "../MediaFiles/Textures/Tree/GreenTree_64x64.png");	
 
 	//character textures
 	CacheTexture("character", "../MediaFiles/Textures/Character/CharacterMovementSheet.png");
+
+	//snowball textures
+	CacheTexture("snowball", "../MediaFiles/Textures/Weapon/Snowball.png");
+
+	//pickups textures
+	CacheTexture("healthRefill", "../MediaFiles/Textures/UI/HealthPickupV2.png");
+	CacheTexture("snowballRefill", "../MediaFiles/Textures/UI/SnowballPickup.png");
 
 
 	/*m_textures.Load(TextureID::kCharacterMovement, "MediaFiles/Textures/Character/CharacterMovementSheet.png");

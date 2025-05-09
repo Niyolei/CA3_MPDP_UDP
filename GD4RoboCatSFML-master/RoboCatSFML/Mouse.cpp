@@ -4,6 +4,7 @@ Mouse::Mouse()
 {
 	SetScale(GetScale() * 0.5f);
 	SetCollisionRadius(20.f);
+	mIsHealth = RoboMath::GetRandomFloat()>0.7;
 }
 
 
