@@ -18,7 +18,7 @@ RoboCat::RoboCat() :
 	mIsShooting(false),
 	mHealth(10)
 {
-	SetCollisionRadius(50.f);
+	SetCollisionRadius(15.f);
 }
 
 void RoboCat::UpdateFacingVector()

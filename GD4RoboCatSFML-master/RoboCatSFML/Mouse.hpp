@@ -22,5 +22,6 @@ public:
 
 protected:
 	Mouse();
+	bool mIsHealth;
 };
 
