@@ -16,6 +16,8 @@ public:
 
 	void TakeDamage(int inDamagingPlayerId);
 
+	void HandlePickup(bool isHealthType);
+
 protected:
 	RoboCatServer();
 

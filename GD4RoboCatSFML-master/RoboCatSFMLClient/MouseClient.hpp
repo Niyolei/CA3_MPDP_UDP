@@ -6,7 +6,11 @@ public:
 protected:
 	MouseClient();
 
+	void Read(InputMemoryBitStream& inInputStream);
+
 private:
 
 	SpriteComponentPtr	mSpriteComponent;
+
+	void UpdateSprite();
 };

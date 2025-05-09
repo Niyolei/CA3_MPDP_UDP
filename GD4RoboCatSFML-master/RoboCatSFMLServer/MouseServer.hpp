@@ -5,6 +5,8 @@ public:
 	void HandleDying() override;
 	virtual bool HandleCollisionWithCat(RoboCat* inCat) override;
 
+	void Read(InputMemoryBitStream& inInputStream) override;
+
 protected:
 	MouseServer();
 };

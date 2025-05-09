@@ -16,7 +16,10 @@ RoboCat::RoboCat() :
 	mThrustDir(0.f, 0.f, 0.f),
 	mPlayerId(0),
 	mIsShooting(false),
-	mHealth(10)
+	mMaxHealth(3),
+	mMaxAmmo(5),
+	mHealth(mMaxHealth),
+	mAmmo(mMaxAmmo)
 {
 	SetCollisionRadius(15.f);
 }
@@ -37,6 +40,14 @@ void RoboCat::UpdateFacingVector()
 	{
 		mFacingVector = Vector3(0.f, mThrustDir.mY, 0.f);
 	}
+}
+
+void RoboCat::Heal() {
+	mHealth = std::min(mHealth + 1, mMaxHealth);
+}
+
+void RoboCat::RefillAmmo() {
+	mAmmo = mMaxAmmo;
 }
 
 void RoboCat::ProcessInput(float inDeltaTime, const InputState& inInputState)
@@ -219,29 +230,29 @@ void RoboCat::ProcessCollisionsWithScreenWalls()
 	float radius = GetCollisionRadius();
 
 	//if the cat collides against a wall, the quick solution is to push it off
-	if ((y + radius) >= kWindowSize.y && vy > 0)
+	if ((y + radius) >= kWindowSize.y - kBorderDistance && vy > 0)
 	{
 		mVelocity.mY = -vy * mWallRestitution;
-		location.mY = kWindowSize.y - radius;
+		location.mY = kWindowSize.y - kBorderDistance - radius;
 		SetLocation(location);
 	}
-	else if (y - radius <= 0 && vy < 0)
+	else if (y - radius <= kBorderDistance && vy < 0)
 	{
 		mVelocity.mY = -vy * mWallRestitution;
-		location.mY = radius;
+		location.mY = kBorderDistance + radius;
 		SetLocation(location);
 	}
 
-	if ((x + radius) >= kWindowSize.x && vx > 0)
+	if ((x + radius) >= kWindowSize.x - kBorderDistance && vx > 0)
 	{
 		mVelocity.mX = -vx * mWallRestitution;
-		location.mX = kWindowSize.x - radius;
+		location.mX = kWindowSize.x - kBorderDistance - radius;
 		SetLocation(location);
 	}
-	else if (x - radius <= 0 && vx < 0)
+	else if (x - radius <= kBorderDistance && vx < 0)
 	{
 		mVelocity.mX = -vx * mWallRestitution;
-		location.mX = radius;
+		location.mX = kBorderDistance + radius;
 		SetLocation(location);
 	}
 }

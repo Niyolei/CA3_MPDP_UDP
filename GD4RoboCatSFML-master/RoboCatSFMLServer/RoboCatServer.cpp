@@ -61,8 +61,10 @@ void RoboCatServer::Update()
 void RoboCatServer::HandleShooting()
 {
 	float time = Timing::sInstance.GetFrameStartTime();
-	if (mIsShooting && Timing::sInstance.GetFrameStartTime() > mTimeOfNextShot)
+	if (mIsShooting && Timing::sInstance.GetFrameStartTime() > mTimeOfNextShot && mAmmo > 0)
 	{
+		mAmmo--;
+
 		//not exact, but okay
 		mTimeOfNextShot = time + mTimeBetweenShots;
 
@@ -93,5 +95,20 @@ void RoboCatServer::TakeDamage(int inDamagingPlayerId)
 
 	//tell the world our health dropped
 	NetworkManagerServer::sInstance->SetStateDirty(GetNetworkId(), ECRS_Health);
+}
+
+void RoboCatServer::HandlePickup(bool isHealthType)
+{
+	if (isHealthType)
+	{
+		Heal();
+		NetworkManagerServer::sInstance->SetStateDirty(GetNetworkId(), ECRS_Health);
+	}
+	else
+	{
+		RefillAmmo();
+		NetworkManagerServer::sInstance->SetStateDirty(GetNetworkId(), ECRS_Ammo);
+	}
+
 }
 

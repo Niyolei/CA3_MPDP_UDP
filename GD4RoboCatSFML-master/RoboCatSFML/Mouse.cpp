@@ -4,7 +4,7 @@ Mouse::Mouse()
 {
 	SetScale(GetScale() * 0.5f);
 	SetCollisionRadius(20.f);
-	mIsHealth = RoboMath::GetRandomFloat()>0.7;
+	mIsHealth = false;
 }
 
 
@@ -27,8 +27,6 @@ uint32_t Mouse::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 		inOutputStream.Write(location.mX);
 		inOutputStream.Write(location.mY);
 
-		inOutputStream.Write(GetRotation());
-
 		writtenState |= EMRS_Pose;
 	}
 	else
@@ -36,13 +34,13 @@ uint32_t Mouse::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 		inOutputStream.Write((bool)false);
 	}
 
-	if (inDirtyState & EMRS_Color)
+	if (inDirtyState & EMRS_Type)
 	{
 		inOutputStream.Write((bool)true);
 
-		inOutputStream.Write(GetColor());
+		inOutputStream.Write(mIsHealth);
 
-		writtenState |= EMRS_Color;
+		writtenState |= EMRS_Type;
 	}
 	else
 	{
@@ -51,33 +49,6 @@ uint32_t Mouse::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 
 
 	return writtenState;
-}
-
-void Mouse::Read(InputMemoryBitStream& inInputStream)
-{
-	bool stateBit;
-
-	inInputStream.Read(stateBit);
-	if (stateBit)
-	{
-		Vector3 location;
-		inInputStream.Read(location.mX);
-		inInputStream.Read(location.mY);
-		SetLocation(location);
-
-		float rotation;
-		inInputStream.Read(rotation);
-		SetRotation(rotation);
-	}
-
-
-	inInputStream.Read(stateBit);
-	if (stateBit)
-	{
-		Vector3 color;
-		inInputStream.Read(color);
-		SetColor(color);
-	}
 }
 
 
