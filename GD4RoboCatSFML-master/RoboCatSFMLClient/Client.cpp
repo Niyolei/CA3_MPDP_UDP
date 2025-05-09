@@ -12,6 +12,11 @@ bool Client::StaticInit()
 	RenderManager::StaticInit();
 	TexturedWorld::StaticInit();
 	HUD::StaticInit();
+	AudioManager::StaticInit();
+
+	AudioManager::sInstance->PlayMusic("game", true);
+	AudioManager::sInstance->SetMusicVolume(50.0f);
+	AudioManager::sInstance->RemoveStoppedSounds();
 
 	s_instance.reset(client);
 

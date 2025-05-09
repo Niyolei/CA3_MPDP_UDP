@@ -58,6 +58,7 @@ void InputManager::HandleInput(EInputAction inInputAction, int inKeyCode)
 		break;
 	case sf::Keyboard::K:
 		UpdateDesireVariableFromKey(inInputAction, mCurrentState.mIsShooting);
+		AudioManager::sInstance->Play("snowballThrow");
 		break;
 	case sf::Keyboard::Add:
 	case sf::Keyboard::Equal:
