@@ -129,6 +129,11 @@ void Server::SetupWorld()
 {
 	//spawn some random mice
 	CreateRandomMice(10);
+	CreateRandomMice(10);
+	CreateRandomMice(10);
+	CreateRandomMice(10);
+	CreateRandomMice(10);
+
 
 	//spawn more random mice!
 	//CreateRandomMice(10);

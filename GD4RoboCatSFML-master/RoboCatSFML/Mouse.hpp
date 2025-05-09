@@ -6,9 +6,9 @@ public:
 	enum EMouseReplicationState
 	{
 		EMRS_Pose = 1 << 0,
-		EMRS_Color = 1 << 1,
+		EMRS_Type = 1 << 1,
 
-		EMRS_AllState = EMRS_Pose | EMRS_Color
+		EMRS_AllState = EMRS_Pose | EMRS_Type
 	};
 
 	static	GameObject* StaticCreate() { return new Mouse(); }
