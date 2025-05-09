@@ -9,8 +9,9 @@ public:
 		ECRS_Color = 1 << 1,
 		ECRS_PlayerId = 1 << 2,
 		ECRS_Health = 1 << 3,
+		ECRS_Ammo = 1 << 4,
 
-		ECRS_AllState = ECRS_Pose | ECRS_Color | ECRS_PlayerId | ECRS_Health
+		ECRS_AllState = ECRS_Pose | ECRS_Color | ECRS_PlayerId | ECRS_Health | ECRS_Ammo
 	};
 
 	Vector3 GetFacingVector() const;
@@ -45,6 +46,9 @@ protected:
 	RoboCat();
 	void UpdateFacingVector();
 
+	void RefillAmmo();
+	void Heal();
+
 private:
 
 
@@ -52,7 +56,8 @@ private:
 
 	Vector3				mVelocity;
 
-
+	int                 mMaxHealth;
+	int					mMaxAmmo;
 	float				mMaxLinearSpeed;
 
 	float 			    mAccelerationMultiplier;
@@ -79,6 +84,7 @@ protected:
 	Vector3				mFacingVector;
 	Vector3				mThrustDir;
 	int					mHealth;
+	int					mAmmo;
 
 	bool				mIsShooting;
 

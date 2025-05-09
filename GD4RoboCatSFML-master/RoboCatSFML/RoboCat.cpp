@@ -16,7 +16,10 @@ RoboCat::RoboCat() :
 	mThrustDir(0.f, 0.f, 0.f),
 	mPlayerId(0),
 	mIsShooting(false),
-	mHealth(10)
+	mHealth(3),
+	mMaxHealth(3),
+	mAmmo(0),
+	mMaxAmmo(5)
 {
 	SetCollisionRadius(15.f);
 }
@@ -37,6 +40,14 @@ void RoboCat::UpdateFacingVector()
 	{
 		mFacingVector = Vector3(0.f, mThrustDir.mY, 0.f);
 	}
+}
+
+void RoboCat::Heal() {
+	mHealth = std::min(mHealth + 1, mMaxHealth);
+}
+
+void RoboCat::RefillAmmo() {
+	mAmmo = mMaxAmmo;
 }
 
 void RoboCat::ProcessInput(float inDeltaTime, const InputState& inInputState)

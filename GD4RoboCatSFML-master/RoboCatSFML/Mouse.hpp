@@ -16,7 +16,6 @@ public:
 	virtual uint32_t	GetAllStateMask()	const override { return EMRS_AllState; }
 
 	virtual uint32_t	Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const override;
-	virtual void		Read(InputMemoryBitStream& inInputStream) override;
 
 	virtual bool HandleCollisionWithCat(RoboCat* inCat) override;
 
