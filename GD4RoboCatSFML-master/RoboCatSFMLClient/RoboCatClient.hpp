@@ -6,6 +6,10 @@ public:
 	virtual void Update();
 	virtual void	HandleDying() override;
 
+	
+	
+
+
 	virtual void	Read(InputMemoryBitStream& inInputStream) override;
 
 	void DoClientSidePredictionAfterReplicationForLocalCat(uint32_t inReadState);
@@ -20,6 +24,8 @@ private:
 	float				mTimeLocationBecameOutOfSync;
 	float				mTimeVelocityBecameOutOfSync;
 
+	
 	SpriteComponentPtr	mSpriteComponent;
+	PlayerUIComponentPtr	mPlayerUIComponent;
 };
 

@@ -8,6 +8,7 @@
 #include "TextureManager.hpp"
 #include "CharacterAnimation.hpp"
 #include "PlayerSpriteComponent.hpp"
+#include "PlayerUIComponent.hpp"
 
 
 #include "FontManager.hpp"

@@ -339,5 +339,15 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 
 }
 
+int RoboCat::GetHealth() const
+{
+	return mHealth;
+}
+
+int RoboCat::GetAmmo() const
+{
+	return mAmmo;
+}
+
 
 

@@ -26,7 +26,9 @@ class PlayerSpriteComponent : public SpriteComponent
 	private: 
 		CharacterAnimation mAnimation;
 		RoboCat* mPlayer;
+
 		FacingDirection mLastDirection;
+				
 };
 typedef shared_ptr<PlayerSpriteComponent>	PlayerSpriteComponentPtr;
 

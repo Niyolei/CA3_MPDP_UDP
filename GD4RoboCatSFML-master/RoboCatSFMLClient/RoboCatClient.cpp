@@ -8,6 +8,9 @@ RoboCatClient::RoboCatClient() :
 	mSpriteComponent->SetTexture(TextureManager::sInstance->GetTexture("character"));
 	sf::IntRect rect(0, 0, 38, 42);
 	mSpriteComponent->GetSprite().setTextureRect(rect);
+
+	mPlayerUIComponent.reset(new PlayerUIComponent(this));
+	RenderManager::sInstance->AddPlayerUIComponent(mPlayerUIComponent.get());	
 }
 
 void RoboCatClient::HandleDying()
@@ -20,6 +23,9 @@ void RoboCatClient::HandleDying()
 		HUD::sInstance->SetPlayerHealth(0);
 	}
 }
+
+
+
 
 
 void RoboCatClient::Update()
