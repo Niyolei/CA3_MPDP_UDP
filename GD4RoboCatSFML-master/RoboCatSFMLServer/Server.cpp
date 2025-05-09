@@ -66,14 +66,6 @@ namespace
 		//	go->SetLocation(mouseLocation);
 		//}
 
-		float border_distance = 65.f;
-
-		//auto type = static_cast<PickupType>(Utility::RandomInt(static_cast<int>(PickupType::kPickupCount)));
-		//sf::Int16 pickup_id = m_pickup_counter++;
-
-
-		//std::unique_ptr<Pickup> pickup = std::make_unique<Pickup>(pickup_id, type, m_textures);
-
 		GameObjectPtr go;
 		go = GameObjectRegistry::sInstance->CreateGameObject('MOUS');
 
@@ -89,17 +81,17 @@ namespace
 		float mid_x = kWindowSize.x / 2;
 		float mid_y = kWindowSize.y / 2;
 
-		Vector3 minOne = Vector3(0.f, 0.f, 0.f);
+		Vector3 minOne = Vector3(kBorderDistance, kBorderDistance, 0.f);
 		Vector3 maxOne = Vector3(mid_x, mid_y, 0.f);
 
-		Vector3 minTwo = Vector3(mid_x, 0.f, 0.f);
-		Vector3 maxTwo = Vector3(kWindowSize.x, mid_y, 0.f);
+		Vector3 minTwo = Vector3(mid_x, kBorderDistance, 0.f);
+		Vector3 maxTwo = Vector3(kWindowSize.x - kBorderDistance, mid_y, 0.f);
 
-		Vector3 minThree = Vector3(0.f, mid_y, 0.f);
-		Vector3 maxThree = Vector3(mid_x, kWindowSize.y, 0.f);
+		Vector3 minThree = Vector3(kBorderDistance, mid_y, 0.f);
+		Vector3 maxThree = Vector3(mid_x, kWindowSize.y - kBorderDistance, 0.f);
 
 		Vector3 minFour = Vector3(mid_x, mid_y, 0.f);
-		Vector3 maxFour = Vector3(kWindowSize.x, kWindowSize.y, 0.f);
+		Vector3 maxFour = Vector3(kWindowSize.x - kBorderDistance, kWindowSize.y - kBorderDistance, 0.f);
 
 		switch (quadrant) {
 		case 0: // Top-left quadrant
