@@ -48,6 +48,11 @@ int RenderManager::GetComponentIndex(SpriteComponent* inComponent) const
 	return -1;
 }
 
+void RenderManager::AddPlayerUIComponent(PlayerUIComponent* inComponent)
+{
+	mPlayerUIComponents.emplace_back(inComponent);
+}
+
 
 //this part that renders the world is really a camera-
 //in a more detailed engine, we'd have a list of cameras, and then render manager would
@@ -75,6 +80,14 @@ void RenderManager::RenderTexturedWorld()
 	}
 }
 
+void RenderManager::RenderPlayerUI()
+{
+	for (PlayerUIComponent* c : mPlayerUIComponents)
+	{
+		c->Render();
+	}
+}
+
 void RenderManager::Render()
 {
 	// Clear the back buffer
@@ -83,5 +96,7 @@ void RenderManager::Render()
 	RenderManager::sInstance->RenderTexturedWorld();
 	RenderManager::sInstance->RenderComponents();
 	HUD::sInstance->Render();	
+	RenderPlayerUI();
 	WindowManager::sInstance->display();	
+	
 }

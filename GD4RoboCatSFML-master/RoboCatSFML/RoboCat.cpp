@@ -325,9 +325,20 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 	if (inDirtyState & ECRS_Health)
 	{
 		inOutputStream.Write((bool)true);
-		inOutputStream.Write(mHealth, 4);
+		inOutputStream.Write(mHealth, 2);
 
 		writtenState |= ECRS_Health;
+	}
+	else
+	{
+		inOutputStream.Write((bool)false);
+	}
+
+	if (inDirtyState & ECRS_Ammo)
+	{
+		inOutputStream.Write((bool)true);
+		inOutputStream.Write(mAmmo, 3);
+		writtenState |= ECRS_Ammo;
 	}
 	else
 	{
@@ -337,6 +348,26 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 	return writtenState;
 
 
+}
+
+int RoboCat::GetHealth() const
+{
+	return mHealth;
+}
+
+int RoboCat::GetAmmo() const
+{
+	return mAmmo;
+}
+
+int RoboCat::GetMaxHealth() const
+{
+	return mMaxHealth;
+}
+
+int RoboCat::GetMaxAmmo() const
+{
+	return mMaxAmmo;
 }
 
 

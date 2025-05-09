@@ -11,10 +11,14 @@ public:
 	void RenderComponents();
 	void RenderTexturedWorld();
 
+	void RenderPlayerUI();
+
 	//vert inefficient method of tracking scene graph...
 	void AddComponent(SpriteComponent* inComponent);
 	void RemoveComponent(SpriteComponent* inComponent);
 	int	 GetComponentIndex(SpriteComponent* inComponent) const;
+
+	void AddPlayerUIComponent(PlayerUIComponent* inComponent);
 
 private:
 
@@ -22,6 +26,7 @@ private:
 
 	//this can't be only place that holds on to component- it has to live inside a GameObject in the world
 	vector< SpriteComponent* >		mComponents;
+	vector< PlayerUIComponent* >	mPlayerUIComponents;
 
 	sf::View view;
 

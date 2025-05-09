@@ -42,6 +42,12 @@ public:
 
 	virtual uint32_t	Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const override;
 
+	int GetHealth() const;
+	int GetAmmo() const;
+
+	int GetMaxHealth() const;
+	int GetMaxAmmo() const;
+
 protected:
 	RoboCat();
 	void UpdateFacingVector();
@@ -55,6 +61,7 @@ private:
 	void	AdjustVelocityByThrust(float inDeltaTime);
 
 	Vector3				mVelocity;
+	
 
 	int                 mMaxHealth;
 	int					mMaxAmmo;

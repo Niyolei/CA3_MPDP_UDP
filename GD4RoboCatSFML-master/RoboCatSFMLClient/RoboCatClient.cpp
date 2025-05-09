@@ -8,6 +8,9 @@ RoboCatClient::RoboCatClient() :
 	mSpriteComponent->SetTexture(TextureManager::sInstance->GetTexture("character"));
 	sf::IntRect rect(0, 0, 38, 42);
 	mSpriteComponent->GetSprite().setTextureRect(rect);
+
+	mPlayerUIComponent.reset(new PlayerUIComponent(this));
+	RenderManager::sInstance->AddPlayerUIComponent(mPlayerUIComponent.get());	
 }
 
 void RoboCatClient::HandleDying()
@@ -20,6 +23,9 @@ void RoboCatClient::HandleDying()
 		HUD::sInstance->SetPlayerHealth(0);
 	}
 }
+
+
+
 
 
 void RoboCatClient::Update()
@@ -122,8 +128,16 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 	if (stateBit)
 	{
 		mHealth = 0;
-		inInputStream.Read(mHealth, 4);
+		inInputStream.Read(mHealth, 2);
 		readState |= ECRS_Health;
+	}
+
+	inInputStream.Read(stateBit);
+	if (stateBit)
+	{
+		mAmmo = 0;
+		inInputStream.Read(mAmmo, 3);
+		readState |= ECRS_Ammo;
 	}
 
 	if (GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())
