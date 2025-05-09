@@ -96,6 +96,7 @@ void RenderManager::Render()
 	RenderManager::sInstance->RenderTexturedWorld();
 	RenderManager::sInstance->RenderComponents();
 	HUD::sInstance->Render();	
-	WindowManager::sInstance->display();	
 	RenderPlayerUI();
+	WindowManager::sInstance->display();	
+	
 }
