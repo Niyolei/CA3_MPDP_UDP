@@ -128,8 +128,16 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 	if (stateBit)
 	{
 		mHealth = 0;
-		inInputStream.Read(mHealth, 4);
+		inInputStream.Read(mHealth, 2);
 		readState |= ECRS_Health;
+	}
+
+	inInputStream.Read(stateBit);
+	if (stateBit)
+	{
+		mAmmo = 0;
+		inInputStream.Read(mAmmo, 3);
+		readState |= ECRS_Ammo;
 	}
 
 	if (GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())

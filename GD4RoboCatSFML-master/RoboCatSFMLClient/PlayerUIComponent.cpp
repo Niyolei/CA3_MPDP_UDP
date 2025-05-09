@@ -24,8 +24,11 @@ void PlayerUIComponent::Render()
 	const float spacingSnowball = 15.f;
 	const float scale = 0.5f;
 
-	const float lifeRow = pos.mY - 40.f;
-	const float snowballRow = pos.mY + 25.f;
+	/*const float lifeRow = pos.mY - 40.f;
+	const float snowballRow = pos.mY + 25.f;*/
+
+	const float lifeRow = pos.mY + 20.f;
+	const float snowballRow = pos.mY + 40.f;
 
 	//Render hearts above the player
 	float healthStartX = pos.mX - (healths * spacingHealth) / 2.f;
@@ -45,7 +48,5 @@ void PlayerUIComponent::Render()
 		mSnowballSprite.setPosition(snowballStartX + (i * spacingSnowball), snowballRow);
 		mSnowballSprite.setScale(0.5f, 0.5f);
 		WindowManager::sInstance->draw(mSnowballSprite);
-	}
-
-	
+	}	
 }
