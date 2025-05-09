@@ -349,5 +349,15 @@ int RoboCat::GetAmmo() const
 	return mAmmo;
 }
 
+int RoboCat::GetMaxHealth() const
+{
+	return mMaxHealth;
+}
+
+int RoboCat::GetMaxAmmo() const
+{
+	return mMaxAmmo;
+}
+
 
 

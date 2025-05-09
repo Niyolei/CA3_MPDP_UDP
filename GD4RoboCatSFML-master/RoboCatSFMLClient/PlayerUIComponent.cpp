@@ -5,7 +5,7 @@ PlayerUIComponent::PlayerUIComponent(GameObject* inGameObject)
 	
 {
 	mPlayer = dynamic_cast<RoboCat*>(inGameObject);
-	mHeartSprite.setTexture(*TextureManager::sInstance->GetTexture("healthRefill"));
+	mHealthSprite.setTexture(*TextureManager::sInstance->GetTexture("healthRefill"));
 	mSnowballSprite.setTexture(*TextureManager::sInstance->GetTexture("snowball"));
 }
 
@@ -17,20 +17,32 @@ void PlayerUIComponent::Render()
 	auto health = mPlayer->GetHealth();
 	auto ammo = mPlayer->GetAmmo();
 
-	//Render hearts above the player
-	for (int i = 0; i < mPlayer->GetHealth(); ++i)
-	{
-		mHeartSprite.setPosition(pos.mX - 50 + (i * 20), pos.mY - 50);
-		mHeartSprite.setScale(0.5f, 0.5f);
+	const int healths = mPlayer->GetMaxHealth();
+	const int snowballs = mPlayer->GetMaxAmmo();
 
-		WindowManager::sInstance->draw(mHeartSprite);
+	const float spacingHealth = 20.f;
+	const float spacingSnowball = 15.f;
+	const float scale = 0.5f;
+
+	const float lifeRow = pos.mY - 40.f;
+	const float snowballRow = pos.mY + 25.f;
+
+	//Render hearts above the player
+	float healthStartX = pos.mX - (healths * spacingHealth) / 2.f;
+	for (int i = 0; i < health; ++i)
+	{
+		mHealthSprite.setPosition(healthStartX + (i * spacingHealth), lifeRow);
+		mHealthSprite.setScale(scale, scale);
+
+		WindowManager::sInstance->draw(mHealthSprite);
 	}
 
 
 	//Render snowballs above the player
-	for (int i = 0; i < mPlayer->GetAmmo(); ++i)
+	float snowballStartX = pos.mX - (snowballs * spacingSnowball) / 2.f;
+	for (int i = 0; i < ammo; ++i)
 	{
-		mSnowballSprite.setPosition(pos.mX + 50 + (i * 20), pos.mY - 50);
+		mSnowballSprite.setPosition(snowballStartX + (i * spacingSnowball), snowballRow);
 		mSnowballSprite.setScale(0.5f, 0.5f);
 		WindowManager::sInstance->draw(mSnowballSprite);
 	}

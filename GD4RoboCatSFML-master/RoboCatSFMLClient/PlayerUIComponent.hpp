@@ -9,7 +9,7 @@ public:
 
 private:
  
-    sf::Sprite mHeartSprite;
+    sf::Sprite mHealthSprite;
     sf::Sprite mSnowballSprite;
 	RoboCat* mPlayer;
 };

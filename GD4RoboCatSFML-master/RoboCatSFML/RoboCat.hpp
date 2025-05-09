@@ -45,6 +45,9 @@ public:
 	int GetHealth() const;
 	int GetAmmo() const;
 
+	int GetMaxHealth() const;
+	int GetMaxAmmo() const;
+
 protected:
 	RoboCat();
 	void UpdateFacingVector();
