@@ -20,7 +20,7 @@
 #include "YarnClient.hpp"
 
 #include "HUD.hpp"
-
+#include "AudioManager.hpp"
 
 #include "ReplicationManagerClient.hpp"
 #include "NetworkManagerClient.hpp"

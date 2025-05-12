@@ -23,7 +23,7 @@ private:
 	void InterpolateClientSidePrediction(float inOldRotation, const Vector3& inOldLocation, const Vector3& inOldVelocity, bool inIsForRemoteCat);
 	float				mTimeLocationBecameOutOfSync;
 	float				mTimeVelocityBecameOutOfSync;
-
+	bool mFirstReplicationReceived = false;
 	
 	SpriteComponentPtr	mSpriteComponent;
 	PlayerUIComponentPtr	mPlayerUIComponent;

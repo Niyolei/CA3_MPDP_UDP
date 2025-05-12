@@ -80,6 +80,8 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 	float oldRotation = GetRotation();
 	Vector3 oldLocation = GetLocation();
 	Vector3 oldVelocity = GetVelocity();
+	int oldHealth = mHealth;
+	int oldAmmo = mAmmo;
 
 	float replicatedRotation;
 	Vector3 replicatedLocation;
@@ -138,6 +140,7 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 		mAmmo = 0;
 		inInputStream.Read(mAmmo, 3);
 		readState |= ECRS_Ammo;
+		
 	}
 
 	if (GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())
@@ -146,6 +149,30 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 		if ((readState & ECRS_Health) != 0)
 		{
 			HUD::sInstance->SetPlayerHealth(mHealth);
+
+			if (mFirstReplicationReceived) {
+				if (mHealth == 0)
+				{
+					AudioManager::sInstance->Play("explosion1");
+				}
+				else if (mHealth >= oldHealth)
+				{
+					AudioManager::sInstance->Play("healthPickup");
+				}
+				else if (mHealth < oldHealth)
+				{
+					AudioManager::sInstance->Play("snowballHitPlayer");
+				}
+			}
+		}
+
+		//did we get ammo?
+		if ((readState & ECRS_Ammo) != 0)
+		{
+			if (mFirstReplicationReceived && mAmmo >= oldAmmo)
+			{
+				AudioManager::sInstance->Play("snowballPickup");
+			}
 		}
 
 		DoClientSidePredictionAfterReplicationForLocalCat(readState);
@@ -167,6 +194,8 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 		}
 
 	}
+
+	mFirstReplicationReceived = true;
 }
 
 void RoboCatClient::DoClientSidePredictionAfterReplicationForLocalCat(uint32_t inReadState)
