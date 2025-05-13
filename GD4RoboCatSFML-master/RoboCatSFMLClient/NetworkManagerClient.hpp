@@ -20,6 +20,9 @@ public:
 	float									GetRoundTripTime()		const { return mAvgRoundTripTime.GetValue(); }
 	int		GetPlayerId()											const { return mPlayerId; }
 	float	GetLastMoveProcessedByServerTimestamp()					const { return mLastMoveProcessedByServerTimestamp; }
+
+
+	bool HasGameStarted() const { return mGameStarted; }
 private:
 	NetworkManagerClient();
 	void Init(const SocketAddress& inServerAddress, const string& inName);
@@ -40,6 +43,7 @@ private:
 	void	DestroyGameObjectsInMap(const IntToGameObjectMap& inObjectsToDestroy);
 
 
+
 	DeliveryNotificationManager mDeliveryNotificationManager;
 	ReplicationManagerClient	mReplicationManagerClient;
 
@@ -57,6 +61,8 @@ private:
 
 	WeightedTimedMovingAverage	mAvgRoundTripTime;
 	float						mLastRoundTripTime;
+
+	bool                        mGameStarted;
 
 };
 

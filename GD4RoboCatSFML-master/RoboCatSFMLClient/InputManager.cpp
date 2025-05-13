@@ -42,49 +42,61 @@ namespace
 
 void InputManager::HandleInput(EInputAction inInputAction, int inKeyCode)
 {
-	switch (inKeyCode)
+	if (NetworkManagerClient::sInstance->HasGameStarted())
 	{
-	case sf::Keyboard::A:
-		UpdateDesireFloatFromKey(inInputAction, mCurrentState.mDesiredLeftAmount);
-		break;
-	case sf::Keyboard::D:
-		UpdateDesireFloatFromKey(inInputAction, mCurrentState.mDesiredRightAmount);
-		break;
-	case sf::Keyboard::W:
-		UpdateDesireFloatFromKey(inInputAction, mCurrentState.mDesiredForwardAmount);
-		break;
-	case sf::Keyboard::S:
-		UpdateDesireFloatFromKey(inInputAction, mCurrentState.mDesiredBackAmount);
-		break;
-	case sf::Keyboard::K:
-		UpdateDesireVariableFromKey(inInputAction, mCurrentState.mIsShooting);
-		AudioManager::sInstance->Play("snowballThrow");
-		break;
-	case sf::Keyboard::Add:
-	case sf::Keyboard::Equal:
-	{
-		float latency = NetworkManagerClient::sInstance->GetSimulatedLatency();
-		latency += 0.1f;
-		if (latency > 0.5f)
+		switch (inKeyCode)
 		{
-			latency = 0.5f;
-		}
-		NetworkManagerClient::sInstance->SetSimulatedLatency(latency);
-		break;
-	}
-	case sf::Keyboard::Subtract:
-	{
-		float latency = NetworkManagerClient::sInstance->GetSimulatedLatency();
-		latency -= 0.1f;
-		if (latency < 0.0f)
+		case sf::Keyboard::A:
+			UpdateDesireFloatFromKey(inInputAction, mCurrentState.mDesiredLeftAmount);
+			break;
+		case sf::Keyboard::D:
+			UpdateDesireFloatFromKey(inInputAction, mCurrentState.mDesiredRightAmount);
+			break;
+		case sf::Keyboard::W:
+			UpdateDesireFloatFromKey(inInputAction, mCurrentState.mDesiredForwardAmount);
+			break;
+		case sf::Keyboard::S:
+			UpdateDesireFloatFromKey(inInputAction, mCurrentState.mDesiredBackAmount);
+			break;
+		case sf::Keyboard::Space:
+			UpdateDesireVariableFromKey(inInputAction, mCurrentState.mIsShooting);
+			AudioManager::sInstance->Play("snowballThrow");
+			break;
+		case sf::Keyboard::Add:
+		case sf::Keyboard::Equal:
 		{
-			latency = 0.0f;
+			float latency = NetworkManagerClient::sInstance->GetSimulatedLatency();
+			latency += 0.1f;
+			if (latency > 0.5f)
+			{
+				latency = 0.5f;
+			}
+			NetworkManagerClient::sInstance->SetSimulatedLatency(latency);
+			break;
 		}
-		NetworkManagerClient::sInstance->SetSimulatedLatency(latency);
-		break;
+		case sf::Keyboard::Subtract:
+		{
+			float latency = NetworkManagerClient::sInstance->GetSimulatedLatency();
+			latency -= 0.1f;
+			if (latency < 0.0f)
+			{
+				latency = 0.0f;
+			}
+			NetworkManagerClient::sInstance->SetSimulatedLatency(latency);
+			break;
+		}
+		}
 	}
-	}
+	else
+	{
+		switch (inKeyCode)
+		{
+		case sf::Keyboard::Return:
+			mIsReadyToStartGame = true;
+			break;
+		}
 
+	}
 }
 
 

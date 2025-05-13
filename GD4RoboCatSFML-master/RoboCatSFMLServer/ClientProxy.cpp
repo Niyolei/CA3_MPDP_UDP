@@ -11,7 +11,8 @@ ClientProxy::ClientProxy(const SocketAddress& inSocketAddress, const string& inN
 	mPlayerId(inPlayerId),
 	mDeliveryNotificationManager(false, true),
 	mIsLastMoveTimestampDirty(false),
-	mTimeToRespawn(0.f)
+	mTimeToRespawn(0.f),
+	mIsReadyToStartGame(false)
 {
 	UpdateLastPacketTime();
 }

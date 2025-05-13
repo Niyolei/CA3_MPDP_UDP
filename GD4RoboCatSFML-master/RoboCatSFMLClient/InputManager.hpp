@@ -13,6 +13,7 @@ public:
 	const Move* GetAndClearPendingMove() { auto toRet = mPendingMove; mPendingMove = nullptr; return toRet; }
 
 	void				Update();
+	bool				IsReadyToStartGame() const { return mIsReadyToStartGame; }
 
 private:
 
@@ -26,5 +27,6 @@ private:
 	MoveList		mMoveList;
 	float			mNextTimeToSampleInput;
 	const Move* mPendingMove;
+	bool mIsReadyToStartGame;
 };
 
