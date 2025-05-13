@@ -104,7 +104,7 @@ void Server::SpawnCatForPlayer(int inPlayerId)
 	cat->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
 	cat->SetPlayerId(inPlayerId);
 	//gotta pick a better spawn location than this...
-	cat->SetLocation(Vector3(600.f - static_cast<float>(inPlayerId), 400.f, 0.f));
+	cat->SpawnAt(NetworkManagerServer::sInstance->GetClientProxy(inPlayerId)->GetSpawnPointId());
 }
 
 void Server::HandleLostClient(ClientProxyPtr inClientProxy)

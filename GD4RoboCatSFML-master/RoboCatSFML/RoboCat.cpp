@@ -23,6 +23,7 @@ RoboCat::RoboCat() :
 	mAmmo(mMaxAmmo)
 {
 	SetCollisionRadius(15.f);
+	SetUpSpawnPointMap();
 }
 
 void RoboCat::UpdateFacingVector()
@@ -118,6 +119,70 @@ void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
 	}
 }
 
+void RoboCat::SetUpSpawnPointMap()
+{
+	float offset_x = 100.f;
+	float offset_y = 100.f;
+
+	for (uint32_t i = 0; i < kMaxPlayers; i++)
+	{
+		mSpawnPointMap[i] = Vector3();
+
+		if ((i / 4) % 2 == 0)
+		{
+			switch (i % 4)
+			{
+			case 0:
+				mSpawnPointMap[i].mX = offset_x;
+				mSpawnPointMap[i].mY = offset_y;
+				break;
+			case 1:
+				mSpawnPointMap[i].mX = kWindowSize.x - offset_x;
+				mSpawnPointMap[i].mY = kWindowSize.y - offset_y;
+				break;
+			case 2:
+				mSpawnPointMap[i].mX = offset_x;
+				mSpawnPointMap[i].mY = kWindowSize.y - offset_y;
+				break;
+			case 3:
+				mSpawnPointMap[i].mX = kWindowSize.x - offset_x;
+				mSpawnPointMap[i].mY = offset_y;
+				offset_x += 150.f;
+				offset_y += 100.f;
+				break;
+			default:
+				break;
+			}
+		}
+		else
+		{
+			switch (i % 4)
+			{
+			case 0:
+				mSpawnPointMap[i].mX = kWindowSize.x / 2.f;
+				mSpawnPointMap[i].mY = offset_y;
+				break;
+			case 1:
+				mSpawnPointMap[i].mX = kWindowSize.x - offset_x;
+				mSpawnPointMap[i].mY = kWindowSize.y / 2.f;
+				break;
+			case 2:
+				mSpawnPointMap[i].mX = kWindowSize.x / 2.f;
+				mSpawnPointMap[i].mY = kWindowSize.y - offset_y;
+				break;
+			case 3:
+				mSpawnPointMap[i].mX = offset_x;
+				mSpawnPointMap[i].mY = kWindowSize.y / 2.f;
+				offset_x += 150.f;
+				offset_y += 100.f;
+				break;
+			default:
+				break;
+			}
+		}
+	}
+}
+
 void RoboCat::SimulateMovement(float inDeltaTime)
 {
 	//simulate us...
@@ -137,6 +202,11 @@ Vector3 RoboCat::GetFacingVector() const
 void RoboCat::Update()
 {
 
+}
+
+void RoboCat::SpawnAt(uint32_t spawnPointId)
+{
+	SetLocation(mSpawnPointMap[spawnPointId]);
 }
 
 void RoboCat::ProcessCollisions()

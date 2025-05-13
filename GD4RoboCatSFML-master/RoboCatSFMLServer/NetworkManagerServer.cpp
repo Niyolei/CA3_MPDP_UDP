@@ -25,6 +25,7 @@ NetworkManagerServer::NetworkManagerServer() :
 	mGameStarted(false),
 	mGameEnded(false)
 {
+	mAvailableSpwawnPoints = { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14 };
 }
 
 bool NetworkManagerServer::StaticInit(uint16_t inPort)
@@ -103,6 +104,8 @@ void NetworkManagerServer::HandlePacketFromNewClient(InputMemoryBitStream& inInp
 		string name;
 		inInputStream.Read(name);
 		ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >(inFromAddress, name, mNewPlayerId++);
+		newClientProxy->SetSpawnPointId(mAvailableSpwawnPoints.front());
+		mAvailableSpwawnPoints.pop_front();
 		mAddressToClientMap[inFromAddress] = newClientProxy;
 		mPlayerIdToClientMap[newClientProxy->GetPlayerId()] = newClientProxy;
 
@@ -315,6 +318,7 @@ void NetworkManagerServer::CheckForDisconnects()
 
 void NetworkManagerServer::HandleClientDisconnected(ClientProxyPtr inClientProxy)
 {
+	mAvailableSpwawnPoints.push_front(inClientProxy->GetSpawnPointId());
 	mPlayerIdToClientMap.erase(inClientProxy->GetPlayerId());
 	mAddressToClientMap.erase(inClientProxy->GetSocketAddress());
 	static_cast<Server*> (Engine::s_instance.get())->HandleLostClient(inClientProxy);

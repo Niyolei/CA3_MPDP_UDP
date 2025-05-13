@@ -24,6 +24,8 @@ public:
 
 	virtual void Update() override;
 
+	void SpawnAt(uint32_t spawnPointId);
+
 	void ProcessInput(float inDeltaTime, const InputState& inInputState);
 	void SimulateMovement(float inDeltaTime);
 
@@ -67,6 +69,8 @@ private:
 
 	void	AdjustVelocityByThrust(float inDeltaTime);
 
+	void   SetUpSpawnPointMap();
+
 	Vector3				mVelocity;
 	
 
@@ -102,6 +106,8 @@ protected:
 
 	bool				mIsShooting;
 	bool 			    mIsHit;
+
+	std::unordered_map<uint32_t, Vector3> mSpawnPointMap;
 
 };
 

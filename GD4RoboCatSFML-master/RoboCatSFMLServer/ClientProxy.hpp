@@ -31,6 +31,10 @@ public:
 
 	bool IsAlive() const { return mIsAlive; }
 
+	void SetSpawnPointId(uint32_t inSpawnPointId) { mSpawnPointId = inSpawnPointId; }
+
+	uint32_t GetSpawnPointId() const { return mSpawnPointId; }
+
 private:
 
 	DeliveryNotificationManager	mDeliveryNotificationManager;
@@ -51,6 +55,7 @@ private:
 	bool 		    mIsReadyToStartGame;
 	bool            mIsAlive;
 
+	uint32_t        mSpawnPointId;
 
 
 };
