@@ -12,10 +12,6 @@ PlayerSpriteComponent::PlayerSpriteComponent(GameObject* inGameObject)
 	mOriginalColor = mAnimation.GetSprite().getColor();
 }
 
-//setting up 8 directions of movement in update
-
-
-
 sf::Sprite& PlayerSpriteComponent::GetSprite()
 {
 	// Update the sprite based on the game object stuff.
@@ -25,7 +21,13 @@ sf::Sprite& PlayerSpriteComponent::GetSprite()
 	mAnimation.GetSprite().setRotation(rot);
 	RoboCat* player = dynamic_cast<RoboCat*>(mGameObject);
 	Vector3 playerColor = player->GetColor();
-	mAnimation.GetSprite().setColor(sf::Color(playerColor.mX, playerColor.mY, playerColor.mZ, 255));
+
+	if (mCurrentAnimationState != CharacterAnimation::CharacterAnimationState::kImpact)
+	{
+		mAnimation.GetSprite().setColor(sf::Color(playerColor.mX, playerColor.mY, playerColor.mZ, 255));
+	}
+
+
 	mAnimation.GetSprite().setPosition(pos.mX, pos.mY);
 
 	return mAnimation.GetSprite();
@@ -71,7 +73,10 @@ void PlayerSpriteComponent::Update(sf::Time dt)
 	
 	else if (mPlayer->IsHit())
 	{
+		//debug
+		LOG("Player is hit", 0);
 		SetCurrentAnimationState(CharacterAnimation::CharacterAnimationState::kImpact);
+		mPlayer->SetIsHit(false);
 	}
 	
 	else
@@ -196,7 +201,7 @@ void PlayerSpriteComponent::UpdateImpactAnimation(sf::Time dt)
 	mAnimation.SetNumFrames(1);
 	mAnimation.SetDuration(mImpactDuration);
 	mAnimation.SetRepeating(false);
-	mAnimation.Update(dt);
+	
 	
 	mBlinkTimer += dt;
 	if (mBlinkTimer >= sf::seconds(0.1f))
@@ -213,7 +218,7 @@ void PlayerSpriteComponent::UpdateImpactAnimation(sf::Time dt)
 		mImpactTimer = sf::Time::Zero;
 		mBlinkTimer = sf::Time::Zero;
 
-		mPlayer->SetIsHit(false);
+		//mPlayer->SetIsHit(false);
 
 		Vector3 velocity = mPlayer->GetVelocity();
 		if (velocity.Length2D() > mPlayer->GetVelocityCutoffValue())
@@ -225,6 +230,8 @@ void PlayerSpriteComponent::UpdateImpactAnimation(sf::Time dt)
 			SetCurrentAnimationState(CharacterAnimation::CharacterAnimationState::kIdle);
 		}
 	}
+
+	mAnimation.Update(dt);
 }
 
 void PlayerSpriteComponent::UpdateIdleAnimation(sf::Time dt)

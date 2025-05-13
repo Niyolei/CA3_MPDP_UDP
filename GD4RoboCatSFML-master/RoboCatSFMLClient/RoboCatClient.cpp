@@ -162,6 +162,9 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 				else if (mHealth < oldHealth)
 				{
 					AudioManager::sInstance->Play("snowballHitPlayer");
+					//set mHit to true so we can play the hit animation
+					mIsHit = true;
+					
 				}
 			}
 		}

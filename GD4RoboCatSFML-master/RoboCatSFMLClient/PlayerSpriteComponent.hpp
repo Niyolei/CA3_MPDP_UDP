@@ -44,7 +44,7 @@ class PlayerSpriteComponent : public SpriteComponent
 
 		sf::Time mBlinkTimer = sf::Time::Zero;
 		sf::Time mImpactTimer = sf::Time::Zero;
-		const sf::Time mImpactDuration = sf::seconds(0.6f); 
+		const sf::Time mImpactDuration = sf::seconds(1.f); 
 		sf::Color mOriginalColor;
 				
 };
