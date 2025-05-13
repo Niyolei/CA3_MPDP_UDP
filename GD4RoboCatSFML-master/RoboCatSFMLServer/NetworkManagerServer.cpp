@@ -271,12 +271,6 @@ ClientProxyPtr NetworkManagerServer::GetClientProxy(int inPlayerId) const
 const bool NetworkManagerServer::HasGameStarted()
 {
 	CheckEveryoneIsReady();
-
-	if (mGameStarted)
-	{
-		mGameStartTime = Timing::sInstance.GetTimef();
-	}
-
 	return mGameStarted;
 }
 
@@ -347,6 +341,10 @@ void NetworkManagerServer::CheckEveryoneIsReady()
 	}
 
 	mGameStarted = true;
+	if (mGameStartTime == 0.f)
+	{
+		mGameStartTime = Timing::sInstance.GetTimef();
+	}
 }
 
 void NetworkManagerServer::RegisterGameObject(GameObjectPtr inGameObject)

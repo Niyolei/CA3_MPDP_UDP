@@ -226,6 +226,8 @@ void Server::KillLastCatStanding()
 		if (cat)
 		{
 			cat->SetDoesWantToDie(true);
+
+			
 		}
 	}
 }

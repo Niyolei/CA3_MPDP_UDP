@@ -26,7 +26,7 @@ public:
 
 	const bool         HasGameEnded() const { return mGameEnded; }
 
-	const float         GetGameStartTime() const { return mGameStartTime; }
+	float         GetGameStartTime() { return mGameStartTime; }
 	
 
 private:
