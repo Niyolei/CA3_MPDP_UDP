@@ -15,10 +15,13 @@ public:
 		const Vector3& GetColor()		const { return mColor; }
 		uint32_t		GetPlayerId()	const { return mPlayerId; }
 		const string& GetPlayerName()	const { return mPlayerName; }
-		const string& GetFormattedNameScore()	const { return mFormattedNameScore; }
-		int				GetScore()		const { return mScore; }
+		const string& GetFormattedNameScore()	const { return mFormattedNameKills; }
+		const string& GetFormattedNameTime()	const { return mFormattedNameTime; }
+		int				GetPlayerKills()		const { return mPlayerKills; }
+		float			GetPlayerTime()		const { return mPlayerTime; }
 
-		void			SetScore(int inScore);
+		void			SetPlayerKills(int inScore);
+		void 			SetTime(float inTime); 
 
 		bool			Write(OutputMemoryBitStream& inOutputStream) const;
 		bool			Read(InputMemoryBitStream& inInputStream);
@@ -29,18 +32,46 @@ public:
 		uint32_t		mPlayerId;
 		string			mPlayerName;
 
-		int				mScore;
+		int				mPlayerKills;
+		float			mPlayerTime;
 
-		string			mFormattedNameScore;
+
+		string			mFormattedNameKills;
+		string			mFormattedNameTime;
 	};
 
-	Entry* GetEntry(uint32_t inPlayerId);
+	struct TimeEntry
+	{
+		string			mPlayerName;
+		float			mPlayerTime;
+	};
+
+	struct KillEntry
+	{
+		string			mPlayerName;
+		int				mPlayerKills;
+	};
+
+	Entry*	GetEntry(uint32_t inPlayerId);
 	bool	RemoveEntry(uint32_t inPlayerId);
 	void	AddEntry(uint32_t inPlayerId, const string& inPlayerName);
-	void	IncScore(uint32_t inPlayerId, int inAmount);
+	void	IncKills(uint32_t inPlayerId, int inAmount);
+	void	SetTime(uint32_t inPlayerId, float inTime);
 
 	bool	Write(OutputMemoryBitStream& inOutputStream) const;
 	bool	Read(InputMemoryBitStream& inInputStream);
+		
+	//reading from the top kill and time file
+	void GetTopTimesFromFile();
+	void GetTopKillsFromFile();
+
+	//writing to the top kill and time file
+	void WriteTopTimesToFile();
+	void WriteTopKillsToFile();
+
+	void CheckForNewTops();
+
+	void GenerateLeaderboard();
 
 	const vector< Entry >& GetEntries()	const { return mEntries; }
 
@@ -49,6 +80,12 @@ private:
 	ScoreBoardManager();
 
 	vector< Entry >	mEntries;
+
+	//for persistence storing data - top kills and top time
+	//to store name and kills
+	vector<KillEntry>	mTopKills;
+	//to store name and time
+	vector<TimeEntry>	mTopTime;
 
 	vector< Vector3 >	mDefaultColors;
 };

@@ -4,7 +4,8 @@ RoboCatServer::RoboCatServer() :
 	mCatControlType(ESCT_Human),
 	mTimeOfNextShot(0.f),
 	mTimeBetweenShots(1.f)
-{}
+{
+}
 
 void RoboCatServer::HandleDying()
 {
@@ -83,7 +84,7 @@ void RoboCatServer::TakeDamage(int inDamagingPlayerId)
 	if (mHealth <= 0.f)
 	{
 		//score one for damaging player...
-		ScoreBoardManager::sInstance->IncScore(inDamagingPlayerId, 1);
+		ScoreBoardManager::sInstance->IncKills(inDamagingPlayerId, 1);
 
 		//and you want to die
 		SetDoesWantToDie(true);
