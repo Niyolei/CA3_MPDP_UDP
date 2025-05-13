@@ -19,8 +19,6 @@ bool MouseServer::HandleCollisionWithCat(RoboCat* inCat)
 	static_cast<RoboCatServer*>(inCat)->HandlePickup(mIsHealth);
 	//kill yourself!
 	SetDoesWantToDie(true);
-	
-	ScoreBoardManager::sInstance->IncKills(inCat->GetPlayerId(), 1);
 
 	return false;
 }

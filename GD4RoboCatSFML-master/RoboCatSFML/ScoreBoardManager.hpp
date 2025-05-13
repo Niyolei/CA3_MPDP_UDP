@@ -15,17 +15,21 @@ public:
 		const Vector3& GetColor()		const { return mColor; }
 		uint32_t		GetPlayerId()	const { return mPlayerId; }
 		const string& GetPlayerName()	const { return mPlayerName; }
-		const string& GetFormattedNameScore()	const { return mFormattedNameKills; }
+		const string& GetFormattedNameKills()	const { return mFormattedNameKills; }
 		const string& GetFormattedNameTime()	const { return mFormattedNameTime; }
+		const string& GetFormattedNameTimeKill() const { return mFormattedNameTimeKill; }
 		int				GetPlayerKills()		const { return mPlayerKills; }
 		float			GetPlayerTime()		const { return mPlayerTime; }
 
 		void			SetPlayerKills(int inScore);
 		void 			SetTime(float inTime); 
+		
 
 		bool			Write(OutputMemoryBitStream& inOutputStream) const;
 		bool			Read(InputMemoryBitStream& inInputStream);
 		static uint32_t	GetSerializedSize();
+
+	
 	private:
 		Vector3			mColor;
 
@@ -38,18 +42,32 @@ public:
 
 		string			mFormattedNameKills;
 		string			mFormattedNameTime;
+		string			mFormattedNameTimeKill;
 	};
 
 	struct TimeEntry
 	{
+		TimeEntry():mPlayerName(""), mPlayerTime(0.f) {};
+
 		string			mPlayerName;
 		float			mPlayerTime;
+
+		bool			Write(OutputMemoryBitStream& inOutputStream) const;
+		bool			Read(InputMemoryBitStream& inInputStream);
+
+		
+
 	};
 
 	struct KillEntry
 	{
+		KillEntry() :mPlayerName(""), mPlayerKills(0) {};
+
 		string			mPlayerName;
 		int				mPlayerKills;
+
+		bool			Write(OutputMemoryBitStream& inOutputStream) const;
+		bool			Read(InputMemoryBitStream& inInputStream);
 	};
 
 	Entry*	GetEntry(uint32_t inPlayerId);
@@ -62,8 +80,7 @@ public:
 	bool	Read(InputMemoryBitStream& inInputStream);
 		
 	//reading from the top kill and time file
-	void GetTopTimesFromFile();
-	void GetTopKillsFromFile();
+	void ReadTopsFromFile();
 
 	//writing to the top kill and time file
 	void WriteTopTimesToFile();
@@ -71,11 +88,18 @@ public:
 
 	void CheckForNewTops();
 
-	void GenerateLeaderboard();
+	
 
 	const vector< Entry >& GetEntries()	const { return mEntries; }
 
+public:
+	bool mGameEnded = false;
+	const vector< KillEntry >& GetTopKills() const { return mTopKills; }
+	const vector< TimeEntry >& GetTopTimes() const { return mTopTimes; }
+
 private:
+	void GetTopTimesFromFile();
+	void GetTopKillsFromFile();
 
 	ScoreBoardManager();
 
@@ -85,7 +109,7 @@ private:
 	//to store name and kills
 	vector<KillEntry>	mTopKills;
 	//to store name and time
-	vector<TimeEntry>	mTopTime;
+	vector<TimeEntry>	mTopTimes;
 
 	vector< Vector3 >	mDefaultColors;
 };

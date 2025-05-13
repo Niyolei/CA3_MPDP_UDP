@@ -190,14 +190,21 @@ void NetworkManagerServer::SendStatePacketToClient(ClientProxyPtr inClientProxy)
 
 	WriteLastMoveTimestampIfDirty(statePacket, inClientProxy);
 
-	AddScoreBoardStateToPacket(statePacket);
+	if (!mGameStarted || mGameEnded)
+	{
+		statePacket.Write((bool)true);
+		AddScoreBoardStateToPacket(statePacket);
+	}
+	else {
+		statePacket.Write((bool)false);
+	}
+	
 
 	ReplicationManagerTransmissionData* rmtd = new ReplicationManagerTransmissionData(&inClientProxy->GetReplicationManagerServer());
 	inClientProxy->GetReplicationManagerServer().Write(statePacket, rmtd);
 	ifp->SetTransmissionData('RPLM', TransmissionDataPtr(rmtd));
 
 	SendPacket(statePacket, inClientProxy->GetSocketAddress());
-
 }
 
 void NetworkManagerServer::WriteLastMoveTimestampIfDirty(OutputMemoryBitStream& inOutputStream, ClientProxyPtr inClientProxy)
@@ -278,12 +285,6 @@ ClientProxyPtr NetworkManagerServer::GetClientProxy(int inPlayerId) const
 const bool NetworkManagerServer::HasGameStarted()
 {
 	CheckEveryoneIsReady();
-
-	if (mGameStarted)
-	{
-		mGameStartTime = Timing::sInstance.GetTimef();
-	}
-
 	return mGameStarted;
 }
 
@@ -342,6 +343,10 @@ void NetworkManagerServer::CheckEveryoneIsReady()
 	}
 
 	mGameStarted = true;
+	if (mGameStartTime == 0.f)
+	{
+		mGameStartTime = Timing::sInstance.GetTimef();
+	}
 }
 
 void NetworkManagerServer::RegisterGameObject(GameObjectPtr inGameObject)
