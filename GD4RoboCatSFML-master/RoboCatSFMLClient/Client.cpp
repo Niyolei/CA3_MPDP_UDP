@@ -32,6 +32,12 @@ Client::Client()
 	string destination = StringUtils::GetCommandLineArg(1);
 	string name = StringUtils::GetCommandLineArg(2);
 
+	//limit name to 4
+	if (name.length() > 4)
+	{
+		name = name.substr(0, 4);
+	}
+
 	SocketAddressPtr serverAddress = SocketAddressFactory::CreateIPv4FromString(destination);
 
 	NetworkManagerClient::StaticInit(*serverAddress, name);
