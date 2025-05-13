@@ -21,6 +21,7 @@ Server::Server()
 	GameObjectRegistry::sInstance->RegisterCreationFunction('YARN', YarnServer::StaticCreate);
 
 	InitNetworkManager();
+	PickupSpawner::StaticInit();
 
 	// Setup latency
 	float latency = 0.0f;
@@ -49,100 +50,6 @@ bool Server::InitNetworkManager()
 }
 
 
-namespace
-{
-	int LastQuadrant = -1;
-	float sinceLastSpawnTime = 0.f;
-	float pickupSpawnInterval = 2.f;
-	float maxPickupSpawnInterval = 4.5f;
-
-	int pickupsSpawned = 0;
-	int maxPickups = 4;
-
-	void CreateRandomMice()
-	{
-		//Vector3 mouseMin(100.f, 100.f, 0.f);
-		//Vector3 mouseMax(1180.f, 620.f, 0.f);
-		//GameObjectPtr go;
-
-		////make a mouse somewhere- where will these come from?
-		//for (int i = 0; i < inMouseCount; ++i)
-		//{
-		//	go = GameObjectRegistry::sInstance->CreateGameObject('MOUS');
-		//	Vector3 mouseLocation = RoboMath::GetRandomVector(mouseMin, mouseMax);
-		//	go->SetLocation(mouseLocation);
-		//}
-
-		GameObjectPtr go;
-		go = GameObjectRegistry::sInstance->CreateGameObject('MOUS');
-
-		
-		int quadrant = RoboMath::GetRandomFloat() * 4;
-		while (quadrant == LastQuadrant) {
-			quadrant = RoboMath::GetRandomFloat() * 4;
-		}
-		LastQuadrant = quadrant;
-
-		Vector3 position;
-
-		float mid_x = kWindowSize.x / 2;
-		float mid_y = kWindowSize.y / 2;
-
-		Vector3 minOne = Vector3(kBorderDistance, kBorderDistance, 0.f);
-		Vector3 maxOne = Vector3(mid_x, mid_y, 0.f);
-
-		Vector3 minTwo = Vector3(mid_x, kBorderDistance, 0.f);
-		Vector3 maxTwo = Vector3(kWindowSize.x - kBorderDistance, mid_y, 0.f);
-
-		Vector3 minThree = Vector3(kBorderDistance, mid_y, 0.f);
-		Vector3 maxThree = Vector3(mid_x, kWindowSize.y - kBorderDistance, 0.f);
-
-		Vector3 minFour = Vector3(mid_x, mid_y, 0.f);
-		Vector3 maxFour = Vector3(kWindowSize.x - kBorderDistance, kWindowSize.y - kBorderDistance, 0.f);
-
-		switch (quadrant) {
-		case 0: // Top-left quadrant
-			position = RoboMath::GetRandomVector(minOne, maxOne);
-			break;
-		case 1: // Top-right quadrant
-			position = RoboMath::GetRandomVector(minTwo, maxTwo);
-			break;
-		case 2: // Bottom-left quadrant
-			position = RoboMath::GetRandomVector(minThree, maxThree);
-			break;
-		case 3: // Bottom-right quadrant
-			position = RoboMath::GetRandomVector(minFour, maxFour);
-			break;
-		default:
-			return;
-		}
-
-		go->SetLocation(position);
-	}
-
-	void CheckForMiceSpawn(float deltaTime, int alivePlayers) {
-		if (sinceLastSpawnTime > pickupSpawnInterval)
-		{
-			sinceLastSpawnTime = 0.f;
-			pickupsSpawned++;
-			CreateRandomMice();
-		}
-
-		pickupSpawnInterval = maxPickupSpawnInterval - (alivePlayers / 4.f);
-
-		if (pickupsSpawned == 0)
-		{
-			sinceLastSpawnTime += deltaTime;
-		}
-
-		if (pickupsSpawned < maxPickups)
-		{
-			sinceLastSpawnTime += deltaTime;
-		}
-	}
-}
-
-
 void Server::SetupWorld()
 {
 
@@ -160,10 +67,7 @@ void Server::DoFrame()
 	{
 		Engine::DoFrame();
 
-		// Check for pickup spawn
-		float deltaTime = Timing::sInstance.GetDeltaTime();
-		int alivePlayers = NetworkManagerServer::sInstance->GetAliveCount();
-		CheckForMiceSpawn(deltaTime, alivePlayers);
+		PickupSpawner::sInstance->CheckForMiceSpawn();
 	}
 	
 	NetworkManagerServer::sInstance->SendOutgoingPackets();

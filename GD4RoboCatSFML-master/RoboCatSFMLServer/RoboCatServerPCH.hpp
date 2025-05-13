@@ -3,6 +3,8 @@
 #include "ReplicationManagerTransmissionData.hpp"
 #include "ReplicationManagerServer.hpp"
 
+#include "PickupSpawner.hpp"
+
 #include "ClientProxy.hpp"
 #include "NetworkManagerServer.hpp"
 #include "Server.hpp"

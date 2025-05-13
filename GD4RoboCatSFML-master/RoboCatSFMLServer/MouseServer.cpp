@@ -9,6 +9,7 @@ MouseServer::MouseServer()
 void MouseServer::HandleDying()
 {
 	NetworkManagerServer::sInstance->UnregisterGameObject(this);
+	PickupSpawner::sInstance->ConsumePickup();
 }
 
 
