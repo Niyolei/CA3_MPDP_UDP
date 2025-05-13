@@ -31,5 +31,6 @@ private:
 	float		mTimeOfNextShot;
 	float		mTimeBetweenShots;
 
+
 };
 

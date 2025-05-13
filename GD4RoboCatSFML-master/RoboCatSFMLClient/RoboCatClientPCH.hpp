@@ -1,6 +1,8 @@
 #include "RoboCatShared.hpp"
 
 #include "SFML\Graphics.hpp"
+#include <iostream>
+#include <fstream>
 
 #include "InputManager.hpp"
 
