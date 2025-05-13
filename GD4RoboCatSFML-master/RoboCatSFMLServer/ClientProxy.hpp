@@ -25,6 +25,10 @@ public:
 	void	HandleCatDied();
 	void	RespawnCatIfNecessary();
 
+	void	SetReadyToStartGame(bool inIsReady) { mIsReadyToStartGame = inIsReady; }
+
+	bool	IsReadyToStartGame() const { return mIsReadyToStartGame; }
+
 private:
 
 	DeliveryNotificationManager	mDeliveryNotificationManager;
@@ -41,6 +45,8 @@ private:
 
 	MoveList		mUnprocessedMoveList;
 	bool			mIsLastMoveTimestampDirty;
+
+	bool 		    mIsReadyToStartGame;
 
 
 

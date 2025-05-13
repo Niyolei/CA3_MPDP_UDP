@@ -20,6 +20,10 @@ public:
 
 	ClientProxyPtr	GetClientProxy(int inPlayerId) const;
 
+	const bool            HasGameStarted();
+
+	
+
 private:
 	NetworkManagerServer();
 
@@ -39,6 +43,8 @@ private:
 
 	void	HandleClientDisconnected(ClientProxyPtr inClientProxy);
 
+	void    CheckEveryoneIsReady();
+
 	int		GetNewNetworkId();
 
 	typedef unordered_map< int, ClientProxyPtr >	IntToClientMap;
@@ -53,6 +59,8 @@ private:
 	float			mTimeOfLastSatePacket;
 	float			mTimeBetweenStatePackets;
 	float			mClientDisconnectTimeout;
+
+	bool			mGameStarted;
 };
 
 

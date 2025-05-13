@@ -7,7 +7,8 @@ NetworkManagerServer::NetworkManagerServer() :
 	mNewPlayerId(1),
 	mNewNetworkId(1),
 	mTimeBetweenStatePackets(0.033f),
-	mClientDisconnectTimeout(3.f)
+	mClientDisconnectTimeout(3.f),
+	mGameStarted(false)
 {
 }
 
@@ -63,6 +64,11 @@ void NetworkManagerServer::ProcessPacket(ClientProxyPtr inClientProxy, InputMemo
 		{
 			HandleInputPacket(inClientProxy, inInputStream);
 		}
+		break;
+	case kReadyCC:
+		bool isReady;
+		inInputStream.Read(isReady);
+		inClientProxy->SetReadyToStartGame(isReady);
 		break;
 	default:
 		LOG("Unknown packet type received from %s", inClientProxy->GetSocketAddress().ToString().c_str());
@@ -163,6 +169,8 @@ void NetworkManagerServer::SendStatePacketToClient(ClientProxyPtr inClientProxy)
 	//it's state!
 	statePacket.Write(kStateCC);
 
+	statePacket.Write(mGameStarted);
+
 	InFlightPacket* ifp = inClientProxy->GetDeliveryNotificationManager().WriteState(statePacket);
 
 	WriteLastMoveTimestampIfDirty(statePacket, inClientProxy);
@@ -252,6 +260,12 @@ ClientProxyPtr NetworkManagerServer::GetClientProxy(int inPlayerId) const
 	return nullptr;
 }
 
+const bool NetworkManagerServer::HasGameStarted()
+{
+	CheckEveryoneIsReady();
+	return mGameStarted;
+}
+
 void NetworkManagerServer::CheckForDisconnects()
 {
 	vector< ClientProxyPtr > clientsToDC;
@@ -283,6 +297,25 @@ void NetworkManagerServer::HandleClientDisconnected(ClientProxyPtr inClientProxy
 	{
 		Engine::s_instance->SetShouldKeepRunning(false);
 	}
+}
+
+void NetworkManagerServer::CheckEveryoneIsReady()
+{
+	if (mGameStarted || mAddressToClientMap.empty())
+	{
+		return;
+	}
+
+	for (const auto& pair : mAddressToClientMap)
+	{
+		ClientProxyPtr clientProxy = pair.second;
+		if (!clientProxy->IsReadyToStartGame())
+		{
+			return;
+		}
+	}
+
+	mGameStarted = true;
 }
 
 void NetworkManagerServer::RegisterGameObject(GameObjectPtr inGameObject)

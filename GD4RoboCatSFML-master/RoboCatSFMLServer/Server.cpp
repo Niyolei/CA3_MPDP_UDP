@@ -137,10 +137,13 @@ void Server::DoFrame()
 
 	NetworkManagerServer::sInstance->CheckForDisconnects();
 
-	NetworkManagerServer::sInstance->RespawnCats();
+	//NetworkManagerServer::sInstance->RespawnCats();
 
-	Engine::DoFrame();
-
+	if (NetworkManagerServer::sInstance->HasGameStarted())
+	{
+		Engine::DoFrame();
+	}
+	
 	NetworkManagerServer::sInstance->SendOutgoingPackets();
 
 }

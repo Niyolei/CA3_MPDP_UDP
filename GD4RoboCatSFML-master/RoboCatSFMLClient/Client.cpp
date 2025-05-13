@@ -45,7 +45,10 @@ void Client::DoFrame()
 {
 	InputManager::sInstance->Update();
 
-	Engine::DoFrame();
+	if (NetworkManagerClient::sInstance->HasGameStarted())
+	{
+		Engine::DoFrame();
+	}
 
 	NetworkManagerClient::sInstance->ProcessIncomingPackets();
 

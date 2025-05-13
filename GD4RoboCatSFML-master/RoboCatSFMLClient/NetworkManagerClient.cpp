@@ -11,7 +11,8 @@ namespace
 NetworkManagerClient::NetworkManagerClient() :
 	mState(NCS_Uninitialized),
 	mDeliveryNotificationManager(true, false),
-	mLastRoundTripTime(0.f)
+	mLastRoundTripTime(0.f),
+	mGameStarted(false)
 {
 }
 
@@ -43,6 +44,14 @@ void NetworkManagerClient::ProcessPacket(InputMemoryBitStream& inInputStream, co
 		HandleWelcomePacket(inInputStream);
 		break;
 	case kStateCC:
+
+		bool isGameStarted;
+		inInputStream.Read(isGameStarted);
+		if (isGameStarted)
+		{
+			mGameStarted = true;
+		}
+
 		if (mDeliveryNotificationManager.ReadAndProcessState(inInputStream))
 		{
 			HandleStatePacket(inInputStream);
@@ -60,6 +69,13 @@ void NetworkManagerClient::SendOutgoingPackets()
 		UpdateSayingHello();
 		break;
 	case NCS_Welcomed:
+		if (!mGameStarted) {
+			//send a ready packet
+			OutputMemoryBitStream readyPacket;
+			readyPacket.Write(kReadyCC);
+			readyPacket.Write(InputManager::sInstance->IsReadyToStartGame());
+			SendPacket(readyPacket, mServerAddress);
+		}
 		UpdateSendingInputPacket();
 		break;
 	}
