@@ -9,6 +9,7 @@ PlayerSpriteComponent::PlayerSpriteComponent(GameObject* inGameObject)
 	sf::IntRect rect(0, 0, 38, 42);
 	mAnimation.GetSprite().setTextureRect(rect);
 	mPlayer = dynamic_cast<RoboCat*>(inGameObject);
+	mOriginalColor = mAnimation.GetSprite().getColor();
 }
 
 //setting up 8 directions of movement in update
@@ -68,8 +69,11 @@ void PlayerSpriteComponent::Update(sf::Time dt)
 		SetCurrentAnimationState(CharacterAnimation::CharacterAnimationState::kAttack);
 	}
 	
-	//later for impact animation
-
+	else if (mPlayer->IsHit())
+	{
+		SetCurrentAnimationState(CharacterAnimation::CharacterAnimationState::kImpact);
+	}
+	
 	else
 	{
 		Vector3 velocity = mPlayer->GetVelocity();
@@ -175,7 +179,52 @@ void PlayerSpriteComponent::UpdateAttackingAnimation(sf::Time dt)
 
 void PlayerSpriteComponent::UpdateImpactAnimation(sf::Time dt)
 {
+	UpdateLastDirection();
+
+	switch (mLastDirection)
+	{
+	case FacingDirection::kDown:		mAnimation.SetRow(0); break;
+	case FacingDirection::kDownLeft:	mAnimation.SetRow(1); break;
+	case FacingDirection::kDownRight:	mAnimation.SetRow(2); break;
+	case FacingDirection::kLeft:		mAnimation.SetRow(3); break;
+	case FacingDirection::kRight:		mAnimation.SetRow(4); break;
+	case FacingDirection::kUp:			mAnimation.SetRow(5); break;
+	case FacingDirection::kUpLeft:		mAnimation.SetRow(6); break;
+	case FacingDirection::kUpRight:		mAnimation.SetRow(7); break;
+	}
+
+	mAnimation.SetNumFrames(1);
+	mAnimation.SetDuration(mImpactDuration);
+	mAnimation.SetRepeating(false);
+	mAnimation.Update(dt);
 	
+	mBlinkTimer += dt;
+	if (mBlinkTimer >= sf::seconds(0.1f))
+	{
+		auto& sprite = mAnimation.GetSprite();
+		sprite.setColor(sprite.getColor() == sf::Color::Transparent ? mOriginalColor : sf::Color::Transparent);
+		mBlinkTimer = sf::Time::Zero;
+	}
+
+	mImpactTimer += dt;
+	if (mImpactTimer >= mImpactDuration)
+	{
+		mAnimation.GetSprite().setColor(mOriginalColor);
+		mImpactTimer = sf::Time::Zero;
+		mBlinkTimer = sf::Time::Zero;
+
+		mPlayer->SetIsHit(false);
+
+		Vector3 velocity = mPlayer->GetVelocity();
+		if (velocity.Length2D() > mPlayer->GetVelocityCutoffValue())
+		{
+			SetCurrentAnimationState(CharacterAnimation::CharacterAnimationState::kWalk);
+		}
+		else
+		{
+			SetCurrentAnimationState(CharacterAnimation::CharacterAnimationState::kIdle);
+		}
+	}
 }
 
 void PlayerSpriteComponent::UpdateIdleAnimation(sf::Time dt)

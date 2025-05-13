@@ -41,6 +41,11 @@ class PlayerSpriteComponent : public SpriteComponent
 		CharacterAnimation::CharacterAnimationState mCurrentAnimationState;
 
 		FacingDirection mLastDirection;
+
+		sf::Time mBlinkTimer = sf::Time::Zero;
+		sf::Time mImpactTimer = sf::Time::Zero;
+		const sf::Time mImpactDuration = sf::seconds(0.6f); 
+		sf::Color mOriginalColor;
 				
 };
 typedef shared_ptr<PlayerSpriteComponent>	PlayerSpriteComponentPtr;

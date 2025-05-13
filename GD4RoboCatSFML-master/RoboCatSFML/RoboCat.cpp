@@ -16,6 +16,7 @@ RoboCat::RoboCat() :
 	mThrustDir(0.f, 0.f, 0.f),
 	mPlayerId(0),
 	mIsShooting(false),
+	mIsHit(false),
 	mMaxHealth(3),
 	mMaxAmmo(5),
 	mHealth(mMaxHealth),
@@ -260,6 +261,7 @@ void RoboCat::ProcessCollisionsWithScreenWalls()
 void RoboCat::HandleYarnCollision(Vector3 yarnVelocity) {
 	//This defyes physics however the yarn should stop the cat for gameplay reasons
 	mVelocity = yarnVelocity * mYarnRestitution;
+	mIsHit = true;
 }
 
 uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const
@@ -378,6 +380,16 @@ void RoboCat::SetIsShooting(bool inIsShooting)
 bool RoboCat::IsShooting() const
 {
 	return mIsShooting;
+}
+
+void RoboCat::SetIsHit(bool inIsHit)
+{
+	mIsHit = inIsHit;
+}
+
+bool RoboCat::IsHit() const
+{
+	return mIsHit;
 }
 
 
