@@ -38,6 +38,8 @@ class PlayerSpriteComponent : public SpriteComponent
 		CharacterAnimation mAnimation;
 		RoboCat* mPlayer;
 
+		bool mActive;
+
 		CharacterAnimation::CharacterAnimationState mCurrentAnimationState;
 
 		FacingDirection mLastDirection;

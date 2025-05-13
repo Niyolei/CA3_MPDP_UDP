@@ -15,13 +15,18 @@ RoboCatClient::RoboCatClient() :
 
 void RoboCatClient::HandleDying()
 {
+	RenderManager::sInstance->RemovePlayerUIComponent(mPlayerUIComponent.get());
 	RoboCat::HandleDying();
 
 	//and if we're local, tell the hud so our health goes away!
 	if (GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())
 	{
 		HUD::sInstance->SetPlayerHealth(0);
+		//delete the player UI component
+		
 	}
+
+
 }
 
 

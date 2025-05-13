@@ -53,6 +53,32 @@ void RenderManager::AddPlayerUIComponent(PlayerUIComponent* inComponent)
 	mPlayerUIComponents.emplace_back(inComponent);
 }
 
+void RenderManager::RemovePlayerUIComponent(PlayerUIComponent* inComponent)
+{
+	int index = GetPlayerUIComponentIndex(inComponent);
+	if (index != -1)
+	{
+		int lastIndex = mPlayerUIComponents.size() - 1;
+		if (index != lastIndex)
+		{
+			mPlayerUIComponents[index] = mPlayerUIComponents[lastIndex];
+		}
+		mPlayerUIComponents.pop_back();
+	}
+}
+
+int RenderManager::GetPlayerUIComponentIndex(PlayerUIComponent* inComponent) const
+{
+	for (int i = 0, c = mPlayerUIComponents.size(); i < c; ++i)
+	{
+		if (mPlayerUIComponents[i] == inComponent)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
 
 //this part that renders the world is really a camera-
 //in a more detailed engine, we'd have a list of cameras, and then render manager would

@@ -19,6 +19,8 @@ public:
 	int	 GetComponentIndex(SpriteComponent* inComponent) const;
 
 	void AddPlayerUIComponent(PlayerUIComponent* inComponent);
+	void RemovePlayerUIComponent(PlayerUIComponent* inComponent);
+	int GetPlayerUIComponentIndex(PlayerUIComponent* inComponent) const;
 
 private:
 

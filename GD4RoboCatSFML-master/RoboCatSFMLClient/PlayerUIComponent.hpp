@@ -12,6 +12,8 @@ private:
     sf::Sprite mHealthSprite;
     sf::Sprite mSnowballSprite;
 	RoboCat* mPlayer;
+
+    bool active;
 };
 
 typedef shared_ptr<PlayerUIComponent> PlayerUIComponentPtr; 
