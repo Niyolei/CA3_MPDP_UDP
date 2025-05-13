@@ -52,7 +52,14 @@ bool Server::InitNetworkManager()
 namespace
 {
 	int LastQuadrant = -1;
-	void CreateRandomMice(int inMouseCount)
+	float sinceLastSpawnTime = 0.f;
+	float pickupSpawnInterval = 2.f;
+	float maxPickupSpawnInterval = 4.5f;
+
+	int pickupsSpawned = 0;
+	int maxPickups = 4;
+
+	void CreateRandomMice()
 	{
 		//Vector3 mouseMin(100.f, 100.f, 0.f);
 		//Vector3 mouseMax(1180.f, 620.f, 0.f);
@@ -113,22 +120,32 @@ namespace
 		go->SetLocation(position);
 	}
 
+	void CheckForMiceSpawn(float deltaTime, int alivePlayers) {
+		if (sinceLastSpawnTime > pickupSpawnInterval)
+		{
+			sinceLastSpawnTime = 0.f;
+			pickupsSpawned++;
+			CreateRandomMice();
+		}
 
+		pickupSpawnInterval = maxPickupSpawnInterval - (alivePlayers / 4.f);
+
+		if (pickupsSpawned == 0)
+		{
+			sinceLastSpawnTime += deltaTime;
+		}
+
+		if (pickupsSpawned < maxPickups)
+		{
+			sinceLastSpawnTime += deltaTime;
+		}
+	}
 }
 
 
 void Server::SetupWorld()
 {
-	//spawn some random mice
-	CreateRandomMice(10);
-	CreateRandomMice(10);
-	CreateRandomMice(10);
-	CreateRandomMice(10);
-	CreateRandomMice(10);
 
-
-	//spawn more random mice!
-	//CreateRandomMice(10);
 }
 
 void Server::DoFrame()
@@ -142,6 +159,11 @@ void Server::DoFrame()
 	if (NetworkManagerServer::sInstance->HasGameStarted())
 	{
 		Engine::DoFrame();
+
+		// Check for pickup spawn
+		float deltaTime = Timing::sInstance.GetDeltaTime();
+		int alivePlayers = NetworkManagerServer::sInstance->GetAliveCount();
+		CheckForMiceSpawn(deltaTime, alivePlayers);
 	}
 	
 	NetworkManagerServer::sInstance->SendOutgoingPackets();
