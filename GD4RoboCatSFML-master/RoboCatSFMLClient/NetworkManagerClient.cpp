@@ -125,7 +125,13 @@ void NetworkManagerClient::HandleStatePacket(InputMemoryBitStream& inInputStream
 
 		//old
 		//HandleGameObjectState( inPacketBuffer );
-		HandleScoreBoardState(inInputStream);
+		bool updateScoreboard;
+		inInputStream.Read(updateScoreboard);
+		if (updateScoreboard)
+		{
+			HandleScoreBoardState(inInputStream);
+		}
+		
 
 		//tell the replication manager to handle the rest...
 		mReplicationManagerClient.Read(inInputStream);

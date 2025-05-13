@@ -24,7 +24,7 @@ void HUD::Render()
 	RenderBandWidth();
 	RenderRoundTripTime();
 	RenderScoreBoard();
-	RenderHealth();
+	//RenderHealth();
 }
 
 void HUD::RenderHealth()
@@ -55,14 +55,47 @@ void HUD::RenderRoundTripTime()
 void HUD::RenderScoreBoard()
 {
 	const vector< ScoreBoardManager::Entry >& entries = ScoreBoardManager::sInstance->GetEntries();
-	Vector3 offset = mScoreBoardOrigin;
 
+	Vector3 leftOffset = mScoreBoardOrigin;     
+	
+	Vector3 centerOffset = mScoreBoardOrigin + Vector3(300.f, 0.f, 0.f);  
+	Vector3 rightOffset = mScoreBoardOrigin + Vector3(600.f, 0.f, 0.f); 
+
+	RenderText("Top Times", leftOffset, Colors::Black);
+	RenderText("All Players", centerOffset, Colors::Black);
+	RenderText("Top Kills", rightOffset, Colors::Black);
+
+	leftOffset.mY += mScoreOffset.mY;
+	centerOffset.mY += mScoreOffset.mY;
+	rightOffset.mY += mScoreOffset.mY;
+
+	
 	for (const auto& entry : entries)
-	{
-		RenderText(entry.GetFormattedNameScore(), offset, entry.GetColor());
-		offset.mX += mScoreOffset.mX;
-		offset.mY += mScoreOffset.mY;
+	{		
+		// Name + Score + Time
+		RenderText(entry.GetPlayerName(), centerOffset, entry.GetColor());
+		RenderText(StringUtils::Sprintf("%d", entry.GetPlayerKills()), centerOffset + Vector3(200.f, 0.f, 0.f), Colors::Black);
+		RenderText(StringUtils::Sprintf("%.2f", entry.GetPlayerTime()), centerOffset + Vector3(400.f, 0.f, 0.f), Colors::Black);
+		centerOffset.mY += mScoreOffset.mY;		
 	}
+
+	const vector< ScoreBoardManager::KillEntry >& kills = ScoreBoardManager::sInstance->GetTopKills();
+	for (const auto& entry : kills)
+	{
+		RenderText(entry.mPlayerName, rightOffset, Colors::Black);
+		RenderText(StringUtils::Sprintf("%d", entry.mPlayerKills), rightOffset + Vector3(200.f, 0.f, 0.f), Colors::Black);
+		rightOffset.mY += mScoreOffset.mY;
+	}
+
+	const vector< ScoreBoardManager::TimeEntry >& times = ScoreBoardManager::sInstance->GetTopTimes();
+	for (const auto& entry : times)
+	{
+		RenderText(entry.mPlayerName, leftOffset, Colors::Black);
+		RenderText(StringUtils::Sprintf("%.2f", entry.mPlayerTime), leftOffset + Vector3(200.f, 0.f, 0.f), Colors::Black);
+		leftOffset.mY += mScoreOffset.mY;
+	}
+
+
 
 }
 

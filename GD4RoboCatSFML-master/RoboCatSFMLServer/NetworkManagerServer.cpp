@@ -176,14 +176,21 @@ void NetworkManagerServer::SendStatePacketToClient(ClientProxyPtr inClientProxy)
 
 	WriteLastMoveTimestampIfDirty(statePacket, inClientProxy);
 
-	AddScoreBoardStateToPacket(statePacket);
+	if (!mGameStarted || mGameEnded)
+	{
+		statePacket.Write((bool)true);
+		AddScoreBoardStateToPacket(statePacket);
+	}
+	else {
+		statePacket.Write((bool)false);
+	}
+	
 
 	ReplicationManagerTransmissionData* rmtd = new ReplicationManagerTransmissionData(&inClientProxy->GetReplicationManagerServer());
 	inClientProxy->GetReplicationManagerServer().Write(statePacket, rmtd);
 	ifp->SetTransmissionData('RPLM', TransmissionDataPtr(rmtd));
 
 	SendPacket(statePacket, inClientProxy->GetSocketAddress());
-
 }
 
 void NetworkManagerServer::WriteLastMoveTimestampIfDirty(OutputMemoryBitStream& inOutputStream, ClientProxyPtr inClientProxy)

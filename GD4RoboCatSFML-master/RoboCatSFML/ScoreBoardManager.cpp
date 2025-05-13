@@ -22,6 +22,7 @@ ScoreBoardManager::Entry::Entry(uint32_t inPlayerId, const string& inPlayerName,
 	mColor(inColor)
 {
 	SetPlayerKills(0);
+	SetTime(0.f);
 }
 
 void ScoreBoardManager::Entry::SetPlayerKills(int32_t inScore)
@@ -101,6 +102,7 @@ void ScoreBoardManager::SetTime(uint32_t inPlayerId, float inTime)
 
 bool ScoreBoardManager::Write(OutputMemoryBitStream& inOutputStream) const
 {
+
 	int entryCount = mEntries.size();
 
 	//we don't know our player names, so it's hard to check for remaining space in the packet...
@@ -110,6 +112,26 @@ bool ScoreBoardManager::Write(OutputMemoryBitStream& inOutputStream) const
 	{
 		entry.Write(inOutputStream);
 	}
+
+
+	inOutputStream.Write(mGameEnded);
+
+	if (mGameEnded)
+	{
+		for (const TimeEntry& entry : mTopTimes)
+		{
+			entry.Write(inOutputStream);
+		}
+
+		for (const KillEntry& entry : mTopKills)
+		{
+			entry.Write(inOutputStream);
+		}
+	}
+
+
+
+	
 
 	return true;
 }
@@ -127,13 +149,30 @@ bool ScoreBoardManager::Read(InputMemoryBitStream& inInputStream)
 		entry.Read(inInputStream);
 	}
 
+	inInputStream.Read(mGameEnded);
+
+	if (mGameEnded)
+	{
+		mTopTimes.resize(5);
+		for (TimeEntry& entry : mTopTimes)
+		{
+			entry.Read(inInputStream);
+		}
+
+		mTopKills.resize(5);
+		for (KillEntry& entry : mTopKills)
+		{
+			entry.Read(inInputStream);
+		}
+	}
+
 	return true;
 }
 
 void ScoreBoardManager::GetTopTimesFromFile()
 {
 	
-	mTopTime.clear();
+	mTopTimes.clear();
 	std::ifstream inFile("TopTimes.txt");
 	if (!inFile)
 	{
@@ -145,7 +184,7 @@ void ScoreBoardManager::GetTopTimesFromFile()
 	{		
 		TimeEntry topTime;
 		inFile >> topTime.mPlayerName >> topTime.mPlayerTime;
-		mTopTime.push_back(topTime);
+		mTopTimes.push_back(topTime);
 	}
 }
 
@@ -174,7 +213,7 @@ void ScoreBoardManager::WriteTopTimesToFile()
 		std::cerr << "Error opening file for writing TopTimes.txt " << std::endl;
 		return;
 	}
-	for (const TimeEntry& entry : mTopTime)
+	for (const TimeEntry& entry : mTopTimes)
 	{
 		outFile << entry.mPlayerName << " " << entry.mPlayerTime << std::endl;
 	}
@@ -209,13 +248,13 @@ void ScoreBoardManager::CheckForNewTops()
 		newKillEntry.mPlayerKills = entry.GetPlayerKills();
 
 		mTopKills.push_back(newKillEntry);
-		mTopTime.push_back(newTimeEntry);
+		mTopTimes.push_back(newTimeEntry);
 
 		std::sort(mTopKills.begin(), mTopKills.end(), [](const KillEntry& a, const KillEntry& b) {
 			return a.mPlayerKills > b.mPlayerKills;
 			});
 
-		std::sort(mTopTime.begin(), mTopTime.end(), [](const TimeEntry& a, const TimeEntry& b) {
+		std::sort(mTopTimes.begin(), mTopTimes.end(), [](const TimeEntry& a, const TimeEntry& b) {
 			return a.mPlayerTime > b.mPlayerTime;
 			});	
 
@@ -223,8 +262,8 @@ void ScoreBoardManager::CheckForNewTops()
 			mTopKills.pop_back();
 		}
 
-		if (mTopTime.size() > 5) {
-			mTopTime.pop_back();
+		if (mTopTimes.size() > 5) {
+			mTopTimes.pop_back();
 		}
 	}
 
@@ -240,6 +279,8 @@ bool ScoreBoardManager::Entry::Write(OutputMemoryBitStream& inOutputStream) cons
 	inOutputStream.Write(mPlayerName);
 	inOutputStream.Write(mPlayerKills);
 	inOutputStream.Write(mPlayerTime);
+
+	
 
 	return didSucceed;
 }
@@ -271,6 +312,38 @@ bool ScoreBoardManager::Entry::Read(InputMemoryBitStream& inInputStream)
 	return didSucceed;
 }
 
+bool ScoreBoardManager::TimeEntry::Write(OutputMemoryBitStream& inOutputStream) const
+{
+	bool didSucceed = true;
+	inOutputStream.Write(mPlayerName);
+	inOutputStream.Write(mPlayerTime);
 
+	return didSucceed;
+}
 
+bool ScoreBoardManager::TimeEntry::Read(InputMemoryBitStream& inInputStream)
+{
+	bool didSucceed = true;
+	inInputStream.Read(mPlayerName);
+	inInputStream.Read(mPlayerTime);
+	return didSucceed;
+}
 
+bool ScoreBoardManager::KillEntry::Write(OutputMemoryBitStream& inOutputStream) const
+{
+	bool didSucceed = true;
+	inOutputStream.Write(mPlayerName);
+	inOutputStream.Write(mPlayerKills);
+
+	return didSucceed;
+}
+
+bool ScoreBoardManager::KillEntry::Read(InputMemoryBitStream& inInputStream)
+{
+	bool didSucceed = true;
+
+	inInputStream.Read(mPlayerName);
+	inInputStream.Read(mPlayerKills);
+
+	return didSucceed;
+}
