@@ -1,13 +1,14 @@
 #pragma once
 class CharacterAnimation : public sf::Drawable, public sf::Transformable
 {
-
-	enum class CharacterAnimationState {
-		kWalk,
-		kAttack,
-		kImpact,
-		kCount
-	};
+	public: 
+		enum class CharacterAnimationState {
+			kIdle,
+			kWalk,
+			kAttack,
+			kImpact,
+			kCount
+		};
 
 
 	public:

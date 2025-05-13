@@ -370,5 +370,15 @@ int RoboCat::GetMaxAmmo() const
 	return mMaxAmmo;
 }
 
+void RoboCat::SetIsShooting(bool inIsShooting)
+{
+	mIsShooting = inIsShooting;
+}
+
+bool RoboCat::IsShooting() const
+{
+	return mIsShooting;
+}
+
 
 

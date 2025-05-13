@@ -20,12 +20,25 @@ class PlayerSpriteComponent : public SpriteComponent
 
 		void SetAnimation(CharacterAnimation* animation);
 		CharacterAnimation& GetAnimation();
+
+		void SetCurrentAnimationState(CharacterAnimation::CharacterAnimationState state);
+		CharacterAnimation::CharacterAnimationState GetCurrentAnimationState() const;
+
 		void Update(sf::Time dt);
+
+		void UpdateAnimation(sf::Time dt);
 		void UpdateWalkingAnimation(sf::Time dt);
+		void UpdateAttackingAnimation(sf::Time dt);
+		void UpdateImpactAnimation(sf::Time dt);
+		void UpdateIdleAnimation(sf::Time dt);
+
+		void UpdateLastDirection();
 
 	private: 
 		CharacterAnimation mAnimation;
 		RoboCat* mPlayer;
+
+		CharacterAnimation::CharacterAnimationState mCurrentAnimationState;
 
 		FacingDirection mLastDirection;
 				
