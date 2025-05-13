@@ -153,13 +153,13 @@ bool ScoreBoardManager::Read(InputMemoryBitStream& inInputStream)
 
 	if (mGameEnded)
 	{
-		mTopTimes.resize(5);
+		mTopTimes.resize(5, TimeEntry());
 		for (TimeEntry& entry : mTopTimes)
 		{
 			entry.Read(inInputStream);
 		}
 
-		mTopKills.resize(5);
+		mTopKills.resize(5,KillEntry());
 		for (KillEntry& entry : mTopKills)
 		{
 			entry.Read(inInputStream);
@@ -176,7 +176,7 @@ void ScoreBoardManager::GetTopTimesFromFile()
 	std::ifstream inFile("TopTimes.txt");
 	if (!inFile)
 	{
-		std::cerr << "Error opening file for reading TopTimes.txt " <<  std::endl;
+		LOG("Error opening file for writing TopTimes.txt %s", string("bruh"));
 		return;
 	}
 
@@ -185,6 +185,8 @@ void ScoreBoardManager::GetTopTimesFromFile()
 		TimeEntry topTime;
 		inFile >> topTime.mPlayerName >> topTime.mPlayerTime;
 		mTopTimes.push_back(topTime);
+
+		LOG("Top Time %s %f", topTime.mPlayerName.c_str(), topTime.mPlayerTime);
 	}
 }
 
@@ -194,7 +196,7 @@ void ScoreBoardManager::GetTopKillsFromFile()
 	std::ifstream inFile("TopKills.txt");
 	if (!inFile)
 	{
-		std::cerr << "Error opening file for reading TopKills.txt " << std::endl;
+		LOG("Error opening file for writing TopKills.txt %s", string("bruh"));
 		return;
 	}
 	for (int i = 0; i < 5; ++i)
@@ -202,7 +204,14 @@ void ScoreBoardManager::GetTopKillsFromFile()
 		KillEntry topKill;
 		inFile >> topKill.mPlayerName >> topKill.mPlayerKills;
 		mTopKills.push_back(topKill);
+
+		LOG("Top Kills %s %d", topKill.mPlayerName.c_str(), topKill.mPlayerKills);
 	}
+}
+
+void ScoreBoardManager::ReadTopsFromFile() {
+	GetTopKillsFromFile();
+	GetTopTimesFromFile();
 }
 
 void ScoreBoardManager::WriteTopTimesToFile()
@@ -210,7 +219,7 @@ void ScoreBoardManager::WriteTopTimesToFile()
 	std::ofstream outFile("TopTimes.txt");
 	if (!outFile)
 	{
-		std::cerr << "Error opening file for writing TopTimes.txt " << std::endl;
+		LOG("Error opening file for writing TopKills.txt %s", string("bruh"));
 		return;
 	}
 	for (const TimeEntry& entry : mTopTimes)
@@ -225,7 +234,7 @@ void ScoreBoardManager::WriteTopKillsToFile()
 	std::ofstream outFile("TopKills.txt");
 	if (!outFile)
 	{
-		std::cerr << "Error opening file for writing TopKills.txt " << std::endl;
+		LOG("Error opening file for writing TopKills.txt %s", string("bruh"));
 		return;
 	}
 	for (const KillEntry& entry : mTopKills)
@@ -267,7 +276,8 @@ void ScoreBoardManager::CheckForNewTops()
 		}
 	}
 
-	
+	WriteTopKillsToFile();
+	WriteTopTimesToFile();
 }
 
 bool ScoreBoardManager::Entry::Write(OutputMemoryBitStream& inOutputStream) const

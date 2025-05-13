@@ -30,12 +30,18 @@ Server::Server()
 		latency = stof(latencyString);
 	}
 	NetworkManagerServer::sInstance->SetSimulatedLatency(latency);
+
+	
+	
 }
 
 
 int Server::Run()
 {
 	SetupWorld();
+
+	ScoreBoardManager::sInstance->ReadTopsFromFile();
+
 
 	return Engine::Run();
 }
@@ -149,6 +155,7 @@ void Server::DoFrame()
 	if (NetworkManagerServer::sInstance->HasGameEnded() && NetworkManagerServer::sInstance->HasGameStarted())
 	{
 		KillLastCatStanding();
+		ScoreBoardManager::sInstance->mGameEnded = true;
 	}
 	else
 	{

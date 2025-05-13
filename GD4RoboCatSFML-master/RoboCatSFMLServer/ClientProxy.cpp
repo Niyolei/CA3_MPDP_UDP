@@ -31,6 +31,8 @@ void	ClientProxy::HandleCatDied()
 
 	float timeAlive = Timing::sInstance.GetTimef() - NetworkManagerServer::sInstance->GetGameStartTime();
 
+	LOG("Player %d died after %.2f seconds", mPlayerId, timeAlive);
+
 	ScoreBoardManager::sInstance->SetTime(mPlayerId, timeAlive);
 }
 

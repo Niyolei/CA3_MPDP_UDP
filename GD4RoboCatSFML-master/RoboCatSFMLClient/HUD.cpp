@@ -73,7 +73,7 @@ void HUD::RenderScoreBoard()
 	for (const auto& entry : entries)
 	{		
 		// Name + Score + Time
-		RenderText(entry.GetPlayerName(), centerOffset, entry.GetColor());
+		RenderText(entry.GetPlayerName(), centerOffset,Colors::Black);
 		RenderText(StringUtils::Sprintf("%d", entry.GetPlayerKills()), centerOffset + Vector3(200.f, 0.f, 0.f), Colors::Black);
 		RenderText(StringUtils::Sprintf("%.2f", entry.GetPlayerTime()), centerOffset + Vector3(400.f, 0.f, 0.f), Colors::Black);
 		centerOffset.mY += mScoreOffset.mY;		
@@ -94,9 +94,6 @@ void HUD::RenderScoreBoard()
 		RenderText(StringUtils::Sprintf("%.2f", entry.mPlayerTime), leftOffset + Vector3(200.f, 0.f, 0.f), Colors::Black);
 		leftOffset.mY += mScoreOffset.mY;
 	}
-
-
-
 }
 
 void HUD::RenderText(const string& inStr, const Vector3& origin, const Vector3& inColor)

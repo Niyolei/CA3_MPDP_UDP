@@ -47,6 +47,8 @@ public:
 
 	struct TimeEntry
 	{
+		TimeEntry():mPlayerName(""), mPlayerTime(0.f) {};
+
 		string			mPlayerName;
 		float			mPlayerTime;
 
@@ -59,6 +61,8 @@ public:
 
 	struct KillEntry
 	{
+		KillEntry() :mPlayerName(""), mPlayerKills(0) {};
+
 		string			mPlayerName;
 		int				mPlayerKills;
 
@@ -76,8 +80,7 @@ public:
 	bool	Read(InputMemoryBitStream& inInputStream);
 		
 	//reading from the top kill and time file
-	void GetTopTimesFromFile();
-	void GetTopKillsFromFile();
+	void ReadTopsFromFile();
 
 	//writing to the top kill and time file
 	void WriteTopTimesToFile();
@@ -85,7 +88,7 @@ public:
 
 	void CheckForNewTops();
 
-	void GenerateLeaderboard();
+	
 
 	const vector< Entry >& GetEntries()	const { return mEntries; }
 
@@ -95,6 +98,8 @@ public:
 	const vector< TimeEntry >& GetTopTimes() const { return mTopTimes; }
 
 private:
+	void GetTopTimesFromFile();
+	void GetTopKillsFromFile();
 
 	ScoreBoardManager();
 
