@@ -48,6 +48,13 @@ public:
 	int GetMaxHealth() const;
 	int GetMaxAmmo() const;
 
+	void SetIsShooting(bool inIsShooting);
+	bool IsShooting() const;
+
+	void SetIsHit(bool inIsHit);
+	bool IsHit() const;
+
+
 protected:
 	RoboCat();
 	void UpdateFacingVector();
@@ -94,6 +101,7 @@ protected:
 	int					mAmmo;
 
 	bool				mIsShooting;
+	bool 			    mIsHit;
 
 };
 

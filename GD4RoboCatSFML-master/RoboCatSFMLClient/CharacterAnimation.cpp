@@ -96,6 +96,7 @@ void CharacterAnimation::Restart()
 {
 	mElaspedTime = sf::Time::Zero;
 	mCurrentFrame = 0;
+
 	//m_sprite.setTextureRect(sf::IntRect(0, 0, m_frame_size.x, m_frame_size.y));
 }
 
