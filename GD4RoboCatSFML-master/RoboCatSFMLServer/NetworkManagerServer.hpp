@@ -25,8 +25,11 @@ public:
 	void            ShouldGameEnd();
 
 	const bool         HasGameEnded() const { return mGameEnded; }
-
+  
+	const int			GetAliveCount() const;
+  
 	float         GetGameStartTime() { return mGameStartTime; }
+
 	
 
 private:

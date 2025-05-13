@@ -3,6 +3,20 @@
 NetworkManagerServer* NetworkManagerServer::sInstance;
 
 
+const int NetworkManagerServer::GetAliveCount() const
+{
+	int aliveCount = 0;
+	for (const auto& pair : mAddressToClientMap)
+	{
+		ClientProxyPtr clientProxy = pair.second;
+		if (clientProxy->IsAlive())
+		{
+			aliveCount++;
+		}
+	}
+	return aliveCount;
+}
+
 NetworkManagerServer::NetworkManagerServer() :
 	mNewPlayerId(1),
 	mNewNetworkId(1),
@@ -276,19 +290,7 @@ const bool NetworkManagerServer::HasGameStarted()
 
 void NetworkManagerServer::ShouldGameEnd()
 {
-	int aliveCount = 0;
-
-	for (const auto& pair : mAddressToClientMap)
-	{
-		ClientProxyPtr clientProxy = pair.second;
-		if (clientProxy->IsAlive())
-		{
-			aliveCount++;
-		}
-	}
-
-
-	mGameEnded = aliveCount <= 1;
+	mGameEnded = GetAliveCount() <= 1;
 }
 
 void NetworkManagerServer::CheckForDisconnects()
