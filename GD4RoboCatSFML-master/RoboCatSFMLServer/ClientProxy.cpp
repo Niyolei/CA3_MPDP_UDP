@@ -12,7 +12,8 @@ ClientProxy::ClientProxy(const SocketAddress& inSocketAddress, const string& inN
 	mDeliveryNotificationManager(false, true),
 	mIsLastMoveTimestampDirty(false),
 	mTimeToRespawn(0.f),
-	mIsReadyToStartGame(false)
+	mIsReadyToStartGame(false),
+	mIsAlive(true)
 {
 	UpdateLastPacketTime();
 }
@@ -26,6 +27,11 @@ void ClientProxy::UpdateLastPacketTime()
 void	ClientProxy::HandleCatDied()
 {
 	mTimeToRespawn = Timing::sInstance.GetFrameStartTime() + kRespawnDelay;
+	mIsAlive = false;
+
+	float timeAlive = Timing::sInstance.GetTimef() - NetworkManagerServer::sInstance->GetGameStartTime();
+
+	ScoreBoardManager::sInstance->SetTime(mPlayerId, timeAlive);
 }
 
 void	ClientProxy::RespawnCatIfNecessary()

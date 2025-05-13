@@ -146,6 +146,14 @@ void Server::DoFrame()
 	
 	NetworkManagerServer::sInstance->SendOutgoingPackets();
 
+	if (NetworkManagerServer::sInstance->HasGameEnded() && NetworkManagerServer::sInstance->HasGameStarted())
+	{
+		KillLastCatStanding();
+	}
+	else
+	{
+		NetworkManagerServer::sInstance->ShouldGameEnd();
+	}
 }
 
 void Server::HandleNewClient(ClientProxyPtr inClientProxy)
@@ -199,4 +207,18 @@ RoboCatPtr Server::GetCatForPlayer(int inPlayerId)
 
 	return nullptr;
 
+}
+
+void Server::KillLastCatStanding()
+{
+	const auto& gameObjects = World::sInstance->GetGameObjects();
+	for (int i = 0, c = gameObjects.size(); i < c; ++i)
+	{
+		GameObjectPtr go = gameObjects[i];
+		RoboCat* cat = go->GetAsCat();
+		if (cat)
+		{
+			cat->SetDoesWantToDie(true);
+		}
+	}
 }

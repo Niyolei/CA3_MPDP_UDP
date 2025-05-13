@@ -29,6 +29,8 @@ public:
 
 	bool	IsReadyToStartGame() const { return mIsReadyToStartGame; }
 
+	bool IsAlive() const { return mIsAlive; }
+
 private:
 
 	DeliveryNotificationManager	mDeliveryNotificationManager;
@@ -47,6 +49,7 @@ private:
 	bool			mIsLastMoveTimestampDirty;
 
 	bool 		    mIsReadyToStartGame;
+	bool            mIsAlive;
 
 
 

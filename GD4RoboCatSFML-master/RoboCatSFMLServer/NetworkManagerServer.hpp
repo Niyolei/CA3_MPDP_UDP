@@ -22,6 +22,11 @@ public:
 
 	const bool            HasGameStarted();
 
+	void            ShouldGameEnd();
+
+	const bool         HasGameEnded() const { return mGameEnded; }
+
+	const float         GetGameStartTime() const { return mGameStartTime; }
 	
 
 private:
@@ -61,6 +66,8 @@ private:
 	float			mClientDisconnectTimeout;
 
 	bool			mGameStarted;
+	bool            mGameEnded;
+	float           mGameStartTime;
 };
 
 

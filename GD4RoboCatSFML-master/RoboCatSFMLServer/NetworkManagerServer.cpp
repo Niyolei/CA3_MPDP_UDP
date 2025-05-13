@@ -8,7 +8,8 @@ NetworkManagerServer::NetworkManagerServer() :
 	mNewNetworkId(1),
 	mTimeBetweenStatePackets(0.033f),
 	mClientDisconnectTimeout(3.f),
-	mGameStarted(false)
+	mGameStarted(false),
+	mGameEnded(false)
 {
 }
 
@@ -263,7 +264,30 @@ ClientProxyPtr NetworkManagerServer::GetClientProxy(int inPlayerId) const
 const bool NetworkManagerServer::HasGameStarted()
 {
 	CheckEveryoneIsReady();
+
+	if (mGameStarted)
+	{
+		mGameStartTime = Timing::sInstance.GetTimef();
+	}
+
 	return mGameStarted;
+}
+
+void NetworkManagerServer::ShouldGameEnd()
+{
+	int aliveCount = 0;
+
+	for (const auto& pair : mAddressToClientMap)
+	{
+		ClientProxyPtr clientProxy = pair.second;
+		if (clientProxy->IsAlive())
+		{
+			aliveCount++;
+		}
+	}
+
+
+	mGameEnded = aliveCount <= 1;
 }
 
 void NetworkManagerServer::CheckForDisconnects()

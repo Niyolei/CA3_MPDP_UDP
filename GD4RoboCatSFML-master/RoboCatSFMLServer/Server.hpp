@@ -12,6 +12,7 @@ public:
 	void HandleLostClient(ClientProxyPtr inClientProxy);
 
 	RoboCatPtr	GetCatForPlayer(int inPlayerId);
+	void KillLastCatStanding();
 	void	SpawnCatForPlayer(int inPlayerId);
 
 
