@@ -23,10 +23,6 @@ uint32_t Yarn::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyStat
 		inOutputStream.Write(location.mX);
 		inOutputStream.Write(location.mY);
 
-		Vector3 velocity = GetVelocity();
-		inOutputStream.Write(velocity.mX);
-		inOutputStream.Write(velocity.mY);
-
 		writtenState |= EYRS_Pose;
 	}
 	else
@@ -59,6 +55,43 @@ uint32_t Yarn::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyStat
 	{
 		inOutputStream.Write((bool)false);
 	}
+
+	if (inDirtyState & EYRS_Velo)
+	{
+		inOutputStream.Write((bool)true);
+
+		Vector3 velocity = GetVelocity();
+		//inOutputStream.Write(velocity.mX);
+		//inOutputStream.Write(velocity.mY);
+
+		if (velocity.mX != 0.f)
+		{
+			inOutputStream.Write((bool)true);
+			inOutputStream.Write(velocity.mX > 0.f);
+		}
+		else
+		{
+			inOutputStream.Write((bool)false);
+		}
+
+		if (velocity.mY != 0.f)
+		{
+			inOutputStream.Write((bool)true);
+			inOutputStream.Write(velocity.mY > 0.f);
+		}
+		else
+		{
+			inOutputStream.Write((bool)false);
+		}
+
+		writtenState |= EYRS_Velo;
+	}
+	else
+	{
+		inOutputStream.Write((bool)false);
+	}
+
+
 	return writtenState;
 }
 

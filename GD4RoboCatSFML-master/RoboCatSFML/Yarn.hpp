@@ -9,8 +9,9 @@ public:
 		EYRS_Pose = 1 << 0,
 		//EYRS_Color = 1 << 1,
 		EYRS_PlayerId = 1 << 1,
+		EYRS_Velo = 1 << 2,
 
-		EYRS_AllState = EYRS_Pose |  EYRS_PlayerId
+		EYRS_AllState = EYRS_Pose | EYRS_PlayerId | EYRS_Velo
 	};
 
 	static	GameObject* StaticCreate() { return new Yarn(); }
