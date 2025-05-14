@@ -80,8 +80,12 @@ void Server::DoFrame()
 
 	if (NetworkManagerServer::sInstance->HasGameEnded() && NetworkManagerServer::sInstance->HasGameStarted())
 	{
-		KillLastCatStanding();
-		ScoreBoardManager::sInstance->mGameEnded = true;
+		if (!NetworkManagerServer::sInstance->mEndExecuted)
+		{
+			KillLastCatStanding();
+			ScoreBoardManager::sInstance->CheckForNewTops();
+		}
+
 	}
 	else
 	{

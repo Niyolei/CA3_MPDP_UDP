@@ -30,6 +30,8 @@ public:
   
 	float         GetGameStartTime() { return mGameStartTime; }
 
+	bool            mEndExecuted;
+
 	
 
 private:
@@ -71,6 +73,7 @@ private:
 	bool			mGameStarted;
 	bool            mGameEnded;
 	float           mGameStartTime;
+
 
 	std::deque< uint32_t> mAvailableSpwawnPoints;
 };

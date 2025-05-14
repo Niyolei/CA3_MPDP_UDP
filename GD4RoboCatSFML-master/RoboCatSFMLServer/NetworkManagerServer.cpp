@@ -23,7 +23,8 @@ NetworkManagerServer::NetworkManagerServer() :
 	mTimeBetweenStatePackets(0.033f),
 	mClientDisconnectTimeout(3.f),
 	mGameStarted(false),
-	mGameEnded(false)
+	mGameEnded(false),
+	mEndExecuted(false)
 {
 	mAvailableSpwawnPoints = { 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14 };
 }
