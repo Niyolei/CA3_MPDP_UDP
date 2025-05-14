@@ -1,4 +1,4 @@
-#include "RoboCatPCH.hpp"
+﻿#include "RoboCatPCH.hpp"
 
 RoboCat::RoboCat() :
 	GameObject(),
@@ -70,7 +70,7 @@ void RoboCat::ProcessInput(float inDeltaTime, const InputState& inInputState)
 
 	mIsShooting = inInputState.IsShooting();
 
-	UpdateFacingVector();
+	//UpdateFacingVector();
 }
 
 void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
@@ -185,6 +185,7 @@ void RoboCat::SetUpSpawnPointMap()
 
 void RoboCat::SimulateMovement(float inDeltaTime)
 {
+	UpdateFacingVector();
 	//simulate us...
 	AdjustVelocityByThrust(inDeltaTime);
 	
@@ -341,7 +342,7 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 	if (inDirtyState & ECRS_PlayerId)
 	{
 		inOutputStream.Write((bool)true);
-		inOutputStream.Write(GetPlayerId());
+		inOutputStream.Write(GetPlayerId(),8);
 
 		writtenState |= ECRS_PlayerId;
 	}
@@ -355,13 +356,37 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 	{
 		inOutputStream.Write((bool)true);
 
+
+		//Save bandwidth by converting to int
+		//7000000 in binary ≈ 24 bits
 		Vector3 velocity = mVelocity;
+
+		//inOutputStream.Write(velocity.mX < 0.f);
+		//int velocityX = abs((int)(velocity.mX * 10000.f));
+		//inOutputStream.Write(velocityX, 24);
+
+		//inOutputStream.Write(velocity.mY < 0.f);
+		//int velocityY = abs((int)(velocity.mY * 10000.f));
+		//inOutputStream.Write(velocityY, 24);
+
 		inOutputStream.Write(velocity.mX);
 		inOutputStream.Write(velocity.mY);
 
+
+		//Save bandwidth by converting to int
+		//192000 in binary ≈ 18 bits
+		//108000 in binary ≈ 17 bits
+
 		Vector3 location = GetLocation();
-		inOutputStream.Write(location.mX);
-		inOutputStream.Write(location.mY);
+
+		int locationX = (int)(location.mX * 100.f);
+		int locationY = (int)(location.mY * 100.f);
+
+		inOutputStream.Write(locationX, 18);
+		inOutputStream.Write(locationY, 17);
+
+		//inOutputStream.Write(location.mX);
+		//inOutputStream.Write(location.mY);
 
 		writtenState |= ECRS_Pose;
 	}
@@ -370,17 +395,26 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 		inOutputStream.Write((bool)false);
 	}
 
-	//always write mThrustDir- it's just two bits
-	if (mThrustDir.mY != 0.f || mThrustDir.mX != 0.f)
-	{
+	if (mThrustDir.mX != 0.f) {
 		inOutputStream.Write(true);
 		inOutputStream.Write(mThrustDir.mX > 0.f);
+	}
+	else
+	{
+		inOutputStream.Write(false);
+	}
+
+	//always write mThrustDir- it's just two bits
+	if (mThrustDir.mY != 0.f)
+	{
+		inOutputStream.Write(true);
 		inOutputStream.Write(mThrustDir.mY > 0.f);
 	}
 	else
 	{
 		inOutputStream.Write(false);
 	}
+
 
 	if (inDirtyState & ECRS_Color)
 	{
