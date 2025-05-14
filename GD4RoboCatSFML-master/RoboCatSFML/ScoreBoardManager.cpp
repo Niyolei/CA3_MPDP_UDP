@@ -108,8 +108,14 @@ bool ScoreBoardManager::Write(OutputMemoryBitStream& inOutputStream) const
 	//we don't know our player names, so it's hard to check for remaining space in the packet...
 	//not really a concern now though
 	inOutputStream.Write(entryCount);
+
+	std::sort(mEntries.begin(), mEntries.end(), [](const Entry& a, const Entry& b) {
+		return a.GetPlayerTime() > b.GetPlayerTime();
+		});
+
 	for (const Entry& entry : mEntries)
 	{
+		
 		entry.Write(inOutputStream);
 	}
 
