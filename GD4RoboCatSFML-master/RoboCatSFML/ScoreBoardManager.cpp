@@ -60,16 +60,19 @@ ScoreBoardManager::Entry* ScoreBoardManager::GetEntry(uint32_t inPlayerId)
 
 bool ScoreBoardManager::RemoveEntry(uint32_t inPlayerId)
 {
-	for (auto eIt = mEntries.begin(), endIt = mEntries.end(); eIt != endIt; ++eIt)
+	if (!mGameEnded)
 	{
-		if ((*eIt).GetPlayerId() == inPlayerId)
+		for (auto eIt = mEntries.begin(), endIt = mEntries.end(); eIt != endIt; ++eIt)
 		{
-			mEntries.erase(eIt);
-			return true;
+			if ((*eIt).GetPlayerId() == inPlayerId)
+			{
+				mEntries.erase(eIt);
+				return true;
+			}
 		}
-	}
 
-	return false;
+		return false;
+	}
 }
 
 void ScoreBoardManager::AddEntry(uint32_t inPlayerId, const string& inPlayerName)
@@ -250,6 +253,12 @@ void ScoreBoardManager::WriteTopKillsToFile()
 
 void ScoreBoardManager::CheckForNewTops()
 {
+	mGameEnded = true;
+
+	std::sort(mEntries.begin(), mEntries.end(), [](const Entry& a, const Entry& b) {
+		return a.GetPlayerTime() > b.GetPlayerTime();
+		});
+
 	for (const Entry& entry : mEntries)
 	{
 		TimeEntry newTimeEntry;
