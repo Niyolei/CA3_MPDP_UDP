@@ -23,7 +23,7 @@ void RoboCatClient::HandleDying()
 	{
 		HUD::sInstance->SetPlayerHealth(0);
 		//delete the player UI component
-		
+		AudioManager::sInstance->Play("explosion1");
 	}
 
 
@@ -187,11 +187,7 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 			HUD::sInstance->SetPlayerHealth(mHealth);
 
 			if (mFirstReplicationReceived) {
-				if (mHealth == 0)
-				{
-					AudioManager::sInstance->Play("explosion1");
-				}
-				else if (mHealth >= oldHealth)
+				if (mHealth >= oldHealth)
 				{
 					AudioManager::sInstance->Play("healthPickup");
 				}

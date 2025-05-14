@@ -14,7 +14,7 @@ void RoboCatServer::HandleDying()
 	ClientProxyPtr clientProxy = NetworkManagerServer::sInstance->GetClientProxy(GetPlayerId());
 	if (clientProxy)
 	{
-		clientProxy->HandleCatDied();
+		clientProxy->HandleCatDied();			
 	}
 }
 
