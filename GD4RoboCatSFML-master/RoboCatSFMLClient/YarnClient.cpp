@@ -28,13 +28,13 @@ void YarnClient::Read(InputMemoryBitStream& inInputStream)
 	}
 
 
-	inInputStream.Read(stateBit);
+	/*inInputStream.Read(stateBit);
 	if (stateBit)
 	{
 		Vector3 color;
 		inInputStream.Read(color);
 		SetColor(color);
-	}
+	}*/
 
 	inInputStream.Read(stateBit);
 	if (stateBit)

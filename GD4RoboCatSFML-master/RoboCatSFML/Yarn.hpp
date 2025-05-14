@@ -7,10 +7,10 @@ public:
 		enum EYarnReplicationState
 	{
 		EYRS_Pose = 1 << 0,
-		EYRS_Color = 1 << 1,
-		EYRS_PlayerId = 1 << 2,
+		//EYRS_Color = 1 << 1,
+		EYRS_PlayerId = 1 << 1,
 
-		EYRS_AllState = EYRS_Pose | EYRS_Color | EYRS_PlayerId
+		EYRS_AllState = EYRS_Pose |  EYRS_PlayerId
 	};
 
 	static	GameObject* StaticCreate() { return new Yarn(); }

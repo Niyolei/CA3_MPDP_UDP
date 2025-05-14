@@ -34,18 +34,18 @@ uint32_t Yarn::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyStat
 		inOutputStream.Write((bool)false);
 	}
 
-	if (inDirtyState & EYRS_Color)
-	{
-		inOutputStream.Write((bool)true);
+	//if (inDirtyState & EYRS_Color)
+	//{
+	//	inOutputStream.Write((bool)true);
 
-		inOutputStream.Write(GetColor());
+	//	inOutputStream.Write(GetColor());
 
-		writtenState |= EYRS_Color;
-	}
-	else
-	{
-		inOutputStream.Write((bool)false);
-	}
+	//	writtenState |= EYRS_Color;
+	//}
+	//else
+	//{
+	//	inOutputStream.Write((bool)false);
+	//}
 
 	if (inDirtyState & EYRS_PlayerId)
 	{

@@ -357,10 +357,11 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 		inOutputStream.Write((bool)true);
 
 
-		//Save bandwidth by converting to int
-		//7000000 in binary ≈ 24 bits
+		
 		Vector3 velocity = mVelocity;
 
+		//Save bandwidth by converting to int
+		//7000000 in binary ≈ 24 bits
 		//inOutputStream.Write(velocity.mX < 0.f);
 		//int velocityX = abs((int)(velocity.mX * 10000.f));
 		//inOutputStream.Write(velocityX, 24);
@@ -372,12 +373,12 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 		inOutputStream.Write(velocity.mX);
 		inOutputStream.Write(velocity.mY);
 
+		
+		Vector3 location = GetLocation();
 
 		//Save bandwidth by converting to int
 		//192000 in binary ≈ 18 bits
 		//108000 in binary ≈ 17 bits
-
-		Vector3 location = GetLocation();
 
 		//int locationX = (int)(location.mX * 100.f);
 		//int locationY = (int)(location.mY * 100.f);
@@ -443,7 +444,7 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 	if (inDirtyState & ECRS_Ammo)
 	{
 		inOutputStream.Write((bool)true);
-		inOutputStream.Write(mAmmo, 3);
+		inOutputStream.Write(mAmmo, 3); 
 		writtenState |= ECRS_Ammo;
 	}
 	else
