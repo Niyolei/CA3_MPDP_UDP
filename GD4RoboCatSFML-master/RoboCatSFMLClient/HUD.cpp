@@ -167,9 +167,11 @@ void HUD::RenderStartMessage()
 {
 	string nameOfTheGame = "Snowballed";
 	string startMessage = "Press Enter to Start";
+	string startMessage2 = "Press Escape to Quit";
 
 	RenderHeadingText(nameOfTheGame, Vector3(800.f, 300.f, 0.f), Colors::Black);
 	RenderText(startMessage, Vector3(750.f, 400.f, 0.f), Colors::Black);
+	RenderText(startMessage2, Vector3(750.f, 500.f, 0.f), Colors::Black);
 }
 
 void HUD::RenderWaitMessage()
