@@ -32,6 +32,11 @@ void	ClientProxy::HandleCatDied()
 	float timeAlive = Timing::sInstance.GetTimef() - NetworkManagerServer::sInstance->GetGameStartTime();
 
 	ScoreBoardManager::sInstance->SetTime(mPlayerId, timeAlive);
+
+	if (!NetworkManagerServer::sInstance->mEndExecuted && NetworkManagerServer::sInstance->HasGameEnded()) {
+		ScoreBoardManager::sInstance->CheckForNewTops();
+		NetworkManagerServer::sInstance->mEndExecuted = true;
+	}
 }
 
 void	ClientProxy::RespawnCatIfNecessary()
