@@ -47,9 +47,10 @@ void NetworkManagerClient::ProcessPacket(InputMemoryBitStream& inInputStream, co
 
 		bool isGameStarted;
 		inInputStream.Read(isGameStarted);
-		if (isGameStarted)
+		if (isGameStarted && !mGameStarted)
 		{
 			mGameStarted = true;
+			HUD::sInstance->SetGameState(HUD::GameState::GameStarted);
 		}
 
 		if (mDeliveryNotificationManager.ReadAndProcessState(inInputStream))
