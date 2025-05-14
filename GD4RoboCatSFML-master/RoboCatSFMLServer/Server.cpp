@@ -83,7 +83,6 @@ void Server::DoFrame()
 		if (!NetworkManagerServer::sInstance->mEndExecuted)
 		{
 			KillLastCatStanding();
-			ScoreBoardManager::sInstance->CheckForNewTops();
 		}
 
 	}
@@ -156,8 +155,6 @@ void Server::KillLastCatStanding()
 		if (cat)
 		{
 			cat->SetDoesWantToDie(true);
-
-			
 		}
 	}
 }

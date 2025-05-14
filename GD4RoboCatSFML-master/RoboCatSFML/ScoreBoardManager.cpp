@@ -261,10 +261,13 @@ void ScoreBoardManager::CheckForNewTops()
 
 	for (const Entry& entry : mEntries)
 	{
+		//LOG print entry
+		LOG("Entry %s %f", entry.GetPlayerName().c_str(), entry.GetPlayerTime());
+
 		TimeEntry newTimeEntry;
 		newTimeEntry.mPlayerName = entry.GetPlayerName();
 		newTimeEntry.mPlayerTime = entry.GetPlayerTime();
-
+		
 		KillEntry newKillEntry;
 		newKillEntry.mPlayerName = entry.GetPlayerName();
 		newKillEntry.mPlayerKills = entry.GetPlayerKills();
