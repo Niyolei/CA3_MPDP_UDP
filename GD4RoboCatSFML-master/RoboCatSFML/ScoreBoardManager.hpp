@@ -97,6 +97,8 @@ public:
 	const vector< KillEntry >& GetTopKills() const { return mTopKills; }
 	const vector< TimeEntry >& GetTopTimes() const { return mTopTimes; }
 
+	bool GetGameEnded() const { return mGameEnded; }
+
 private:
 	void GetTopTimesFromFile();
 	void GetTopKillsFromFile();

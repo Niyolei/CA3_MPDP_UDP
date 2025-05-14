@@ -9,7 +9,8 @@ HUD::HUD() :
 	mRoundTripTimeOrigin(580.f, 10.f, 0.0f),
 	mScoreOffset(0.f, 50.f, 0.0f),
 	mHealthOffset(1000, 10.f, 0.0f),
-	mHealth(0)
+	mHealth(0),
+	mGameState(GameState::StartScreen)
 {
 }
 
@@ -23,8 +24,37 @@ void HUD::Render()
 {
 	RenderBandWidth();
 	RenderRoundTripTime();
-	RenderScoreBoard();
+	
+	/*RenderScoreBoard();
+
+	RenderStartMessage();
+	RenderWaitMessage();
+	RenderGameStartedMessage();*/
 	//RenderHealth();
+
+	if (ScoreBoardManager::sInstance->GetGameEnded())
+	{
+		SetGameState(GameState::GameEnded);
+	}
+
+	switch (mGameState)
+	{
+	case GameState::StartScreen:
+		RenderStartMessage();
+		break;
+	case GameState::WaitingForPlayers:
+		RenderWaitMessage();
+		break;
+	case GameState::GameStarted:
+		if (Timing::sInstance.GetTimef() - mGameStartedDisplayTime < 1.0f)
+		{
+			RenderGameStartedMessage(); 
+		}
+		break;
+	case GameState::GameEnded:
+		RenderScoreBoard();
+		break;
+	}
 }
 
 void HUD::RenderHealth()
@@ -53,29 +83,43 @@ void HUD::RenderRoundTripTime()
 }
 
 void HUD::RenderScoreBoard()
-{
+{	
+	const float windowWidth = 1920.f;
+
+	const float columnSpacing = 400.f; 
+
+	// Total width across all three columns (two gaps between three columns)
+	const float totalWidth = 2 * columnSpacing;
+
+	// Start X will center the full block horizontally
+	float startX = (windowWidth - totalWidth) / 2.f;
+
+	float startY = 400.f;
+	float startYCenter = 100.f;
+
+	Vector3 leftOffset(startX-columnSpacing, startY, 0.f);
+	Vector3 centerOffset(startX +0.5*columnSpacing, startYCenter, 0.f);
+	Vector3 rightOffset(startX + 2.25* columnSpacing, startY, 0.f);
+
+
+	RenderHeadingText("TOP TIMES", leftOffset, Colors::Black);
+	RenderHeadingText("SCOREBOARD", centerOffset, Colors::Black);
+	RenderHeadingText("TOP KILLS", rightOffset, Colors::Black);
+
+	leftOffset.mY += mScoreOffset.mY + 20.f;
+	centerOffset.mY += mScoreOffset.mY + 20.f;
+	rightOffset.mY += mScoreOffset.mY + 20.f;
+
+	//reducing the horizontal difference between rendering the texts inside the loop
+	//leftOffset.mX -=
+
 	const vector< ScoreBoardManager::Entry >& entries = ScoreBoardManager::sInstance->GetEntries();
-
-	Vector3 leftOffset = mScoreBoardOrigin;     
-	
-	Vector3 centerOffset = mScoreBoardOrigin + Vector3(300.f, 0.f, 0.f);  
-	Vector3 rightOffset = mScoreBoardOrigin + Vector3(600.f, 0.f, 0.f); 
-
-	RenderText("Top Times", leftOffset, Colors::Black);
-	RenderText("All Players", centerOffset, Colors::Black);
-	RenderText("Top Kills", rightOffset, Colors::Black);
-
-	leftOffset.mY += mScoreOffset.mY;
-	centerOffset.mY += mScoreOffset.mY;
-	rightOffset.mY += mScoreOffset.mY;
-
-	
 	for (const auto& entry : entries)
 	{		
 		// Name + Score + Time
-		RenderText(entry.GetPlayerName(), centerOffset,Colors::Black);
-		RenderText(StringUtils::Sprintf("%d", entry.GetPlayerKills()), centerOffset + Vector3(200.f, 0.f, 0.f), Colors::Black);
-		RenderText(StringUtils::Sprintf("%.2f", entry.GetPlayerTime()), centerOffset + Vector3(400.f, 0.f, 0.f), Colors::Black);
+		RenderText(entry.GetPlayerName(), centerOffset ,Colors::Black);
+		RenderText(StringUtils::Sprintf("%d", entry.GetPlayerKills()), centerOffset + Vector3(150.f, 0.f, 0.f), Colors::Black);
+		RenderText(StringUtils::Sprintf("%.2f", entry.GetPlayerTime()), centerOffset + Vector3(250.f, 0.f, 0.f), Colors::Black);
 		centerOffset.mY += mScoreOffset.mY;		
 	}
 
@@ -91,7 +135,7 @@ void HUD::RenderScoreBoard()
 	for (const auto& entry : times)
 	{
 		RenderText(entry.mPlayerName, leftOffset, Colors::Black);
-		RenderText(StringUtils::Sprintf("%.2f", entry.mPlayerTime), leftOffset + Vector3(200.f, 0.f, 0.f), Colors::Black);
+		RenderText(StringUtils::Sprintf("%.2f", entry.mPlayerTime), leftOffset + Vector3(150.f, 0.f, 0.f), Colors::Black);
 		leftOffset.mY += mScoreOffset.mY;
 	}
 }
@@ -105,5 +149,36 @@ void HUD::RenderText(const string& inStr, const Vector3& origin, const Vector3& 
 	text.setPosition(origin.mX, origin.mY);
 	text.setFont(*FontManager::sInstance->GetFont("carlito"));
 	WindowManager::sInstance->draw(text);
+}
+
+void HUD::RenderHeadingText(const string& inStr, const Vector3& origin, const Vector3& inColor)
+{
+	sf::Text text;
+	text.setString(inStr);
+	text.setFillColor(sf::Color(inColor.mX, inColor.mY, inColor.mZ, 255));
+	text.setCharacterSize(60);
+	text.setPosition(origin.mX, origin.mY);
+	text.setFont(*FontManager::sInstance->GetFont("carlito"));
+	text.setStyle(sf::Text::Bold);
+	WindowManager::sInstance->draw(text);
+}
+
+void HUD::RenderStartMessage()
+{
+	string nameOfTheGame = "Snowballed";
+	string startMessage = "Press Enter to Start";
+
+	RenderHeadingText(nameOfTheGame, Vector3(800.f, 300.f, 0.f), Colors::Black);
+	RenderText(startMessage, Vector3(750.f, 400.f, 0.f), Colors::Black);
+}
+
+void HUD::RenderWaitMessage()
+{
+	RenderText("Waiting for other players", Vector3(710.f, 400.f, 0.f), Colors::Black);
+}
+
+void HUD::RenderGameStartedMessage()
+{
+	RenderText("Game Started", Vector3(790.f, 400.f, 0.f), Colors::Black);
 }
 

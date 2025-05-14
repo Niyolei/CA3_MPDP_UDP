@@ -92,6 +92,7 @@ void InputManager::HandleInput(EInputAction inInputAction, int inKeyCode)
 		switch (inKeyCode)
 		{
 		case sf::Keyboard::Return:
+			HUD::sInstance->SetGameState(HUD::GameState::WaitingForPlayers);
 			mIsReadyToStartGame = true;
 			break;
 		}

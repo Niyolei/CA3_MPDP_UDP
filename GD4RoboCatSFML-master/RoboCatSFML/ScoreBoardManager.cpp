@@ -153,6 +153,7 @@ bool ScoreBoardManager::Read(InputMemoryBitStream& inInputStream)
 
 	if (mGameEnded)
 	{
+		
 		mTopTimes.resize(5, TimeEntry());
 		for (TimeEntry& entry : mTopTimes)
 		{
@@ -164,6 +165,7 @@ bool ScoreBoardManager::Read(InputMemoryBitStream& inInputStream)
 		{
 			entry.Read(inInputStream);
 		}
+
 	}
 
 	return true;
