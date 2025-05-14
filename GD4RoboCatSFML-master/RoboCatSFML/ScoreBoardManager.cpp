@@ -109,10 +109,6 @@ bool ScoreBoardManager::Write(OutputMemoryBitStream& inOutputStream) const
 	//not really a concern now though
 	inOutputStream.Write(entryCount);
 
-	std::sort(mEntries.begin(), mEntries.end(), [](const Entry& a, const Entry& b) {
-		return a.GetPlayerTime() > b.GetPlayerTime();
-		});
-
 	for (const Entry& entry : mEntries)
 	{
 		

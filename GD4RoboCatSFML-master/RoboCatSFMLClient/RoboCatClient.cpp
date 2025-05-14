@@ -77,7 +77,7 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 	if (stateBit)
 	{
 		uint32_t playerId;
-		inInputStream.Read(playerId, 8);
+		inInputStream.Read(playerId);
 		SetPlayerId(playerId);
 		readState |= ECRS_PlayerId;
 	}

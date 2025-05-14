@@ -342,7 +342,7 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 	if (inDirtyState & ECRS_PlayerId)
 	{
 		inOutputStream.Write((bool)true);
-		inOutputStream.Write(GetPlayerId(),8);
+		inOutputStream.Write(GetPlayerId());
 
 		writtenState |= ECRS_PlayerId;
 	}

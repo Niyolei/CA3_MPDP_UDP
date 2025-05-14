@@ -52,6 +52,9 @@ void PlayerUIComponent::Render()
 		nameText.setPosition(pos.mX - (nameText.getGlobalBounds().width / 2), nameRow);
 		WindowManager::sInstance->draw(nameText);
 	}
+	else {
+		LOG("Player name not found in scoreboard manager", string());
+	}
 
 	//Render hearts above the player
 	float healthStartX = pos.mX - (healths * spacingHealth) / 2.f;
