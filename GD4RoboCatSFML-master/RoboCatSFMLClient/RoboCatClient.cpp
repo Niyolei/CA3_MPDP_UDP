@@ -77,7 +77,7 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 	if (stateBit)
 	{
 		uint32_t playerId;
-		inInputStream.Read(playerId);
+		inInputStream.Read(playerId, 8);
 		SetPlayerId(playerId);
 		readState |= ECRS_PlayerId;
 	}
@@ -95,13 +95,36 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 	inInputStream.Read(stateBit);
 	if (stateBit)
 	{
+		//int velocityX = 0;
+		//int velocityY = 0;
+
+		//inInputStream.Read(stateBit);
+		//inInputStream.Read(velocityX, 24);
+		//velocityX = stateBit ? -velocityX : velocityX;
+
+		//inInputStream.Read(stateBit);
+		//inInputStream.Read(velocityY, 24);
+		//velocityY = stateBit ? -velocityY : velocityY;
+
+		//replicatedVelocity.mX = (float)velocityX / 10000.f;
+		//replicatedVelocity.mY = (float)velocityY / 10000.f;
+
 		inInputStream.Read(replicatedVelocity.mX);
 		inInputStream.Read(replicatedVelocity.mY);
 
 		SetVelocity(replicatedVelocity);
 
-		inInputStream.Read(replicatedLocation.mX);
-		inInputStream.Read(replicatedLocation.mY);
+		int locationX = 0;
+		int locationY = 0;
+
+		inInputStream.Read(locationX, 18);
+		inInputStream.Read(locationY, 17);
+
+		replicatedLocation.mX = (float)locationX / 100.f;
+		replicatedLocation.mY = (float)locationY / 100.f;
+
+		//inInputStream.Read(replicatedLocation.mX);
+		//inInputStream.Read(replicatedLocation.mY);
 
 		SetLocation(replicatedLocation);
 
