@@ -70,7 +70,7 @@ void RoboCat::ProcessInput(float inDeltaTime, const InputState& inInputState)
 
 	mIsShooting = inInputState.IsShooting();
 
-	UpdateFacingVector();
+	//UpdateFacingVector();
 }
 
 void RoboCat::AdjustVelocityByThrust(float inDeltaTime)
@@ -185,6 +185,7 @@ void RoboCat::SetUpSpawnPointMap()
 
 void RoboCat::SimulateMovement(float inDeltaTime)
 {
+	UpdateFacingVector();
 	//simulate us...
 	AdjustVelocityByThrust(inDeltaTime);
 	
@@ -370,17 +371,26 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 		inOutputStream.Write((bool)false);
 	}
 
-	//always write mThrustDir- it's just two bits
-	if (mThrustDir.mY != 0.f || mThrustDir.mX != 0.f)
-	{
+	if (mThrustDir.mX != 0.f) {
 		inOutputStream.Write(true);
 		inOutputStream.Write(mThrustDir.mX > 0.f);
+	}
+	else
+	{
+		inOutputStream.Write(false);
+	}
+
+	//always write mThrustDir- it's just two bits
+	if (mThrustDir.mY != 0.f)
+	{
+		inOutputStream.Write(true);
 		inOutputStream.Write(mThrustDir.mY > 0.f);
 	}
 	else
 	{
 		inOutputStream.Write(false);
 	}
+
 
 	if (inDirtyState & ECRS_Color)
 	{
