@@ -3,7 +3,7 @@
 Mouse::Mouse()
 {
 	SetScale(GetScale() * 0.5f);
-	SetCollisionRadius(20.f);
+	SetCollisionRadius(25.f);
 	mIsHealth = false;
 }
 

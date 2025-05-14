@@ -114,17 +114,17 @@ void RoboCatClient::Read(InputMemoryBitStream& inInputStream)
 
 		SetVelocity(replicatedVelocity);
 
-		int locationX = 0;
-		int locationY = 0;
+		//int locationX = 0;
+		//int locationY = 0;
 
-		inInputStream.Read(locationX, 18);
-		inInputStream.Read(locationY, 17);
+		//inInputStream.Read(locationX, 18);
+		//inInputStream.Read(locationY, 17);
 
-		replicatedLocation.mX = (float)locationX / 100.f;
-		replicatedLocation.mY = (float)locationY / 100.f;
+		//replicatedLocation.mX = (float)locationX / 100.f;
+		//replicatedLocation.mY = (float)locationY / 100.f;
 
-		//inInputStream.Read(replicatedLocation.mX);
-		//inInputStream.Read(replicatedLocation.mY);
+		inInputStream.Read(replicatedLocation.mX);
+		inInputStream.Read(replicatedLocation.mY);
 
 		SetLocation(replicatedLocation);
 

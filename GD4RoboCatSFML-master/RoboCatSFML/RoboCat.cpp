@@ -22,7 +22,7 @@ RoboCat::RoboCat() :
 	mHealth(mMaxHealth),
 	mAmmo(mMaxAmmo)
 {
-	SetCollisionRadius(15.f);
+	SetCollisionRadius(25.f);
 	SetUpSpawnPointMap();
 }
 
@@ -379,14 +379,14 @@ uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyS
 
 		Vector3 location = GetLocation();
 
-		int locationX = (int)(location.mX * 100.f);
-		int locationY = (int)(location.mY * 100.f);
+		//int locationX = (int)(location.mX * 100.f);
+		//int locationY = (int)(location.mY * 100.f);
 
-		inOutputStream.Write(locationX, 18);
-		inOutputStream.Write(locationY, 17);
+		//inOutputStream.Write(locationX, 18);
+		//inOutputStream.Write(locationY, 17);
 
-		//inOutputStream.Write(location.mX);
-		//inOutputStream.Write(location.mY);
+		inOutputStream.Write(location.mX);
+		inOutputStream.Write(location.mY);
 
 		writtenState |= ECRS_Pose;
 	}
