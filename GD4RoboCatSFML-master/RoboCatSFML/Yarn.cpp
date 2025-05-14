@@ -10,7 +10,7 @@ Yarn::Yarn() :
 }
 
 
-
+// 32 + 32 + 4 + 8 + 3-> 79 bits per snowball * 4 snowballs = 316 bits
 uint32_t Yarn::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const
 {
 	uint32_t writtenState = 0;

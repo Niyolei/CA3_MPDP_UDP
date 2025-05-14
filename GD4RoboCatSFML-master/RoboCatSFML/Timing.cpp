@@ -1,6 +1,6 @@
 #include "RoboCatPCH.hpp"
 
-float kDesiredFrameTime = 0.0166f;
+float kDesiredFrameTime = 0.033f;
 #if !_WIN32
 #include <chrono>
 using namespace std::chrono;

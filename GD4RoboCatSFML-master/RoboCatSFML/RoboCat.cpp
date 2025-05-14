@@ -335,6 +335,7 @@ void RoboCat::HandleYarnCollision(Vector3 yarnVelocity) {
 	mIsHit = true;
 }
 
+// 64 + 64 + 1 + 4 + 3 + 4 = 140 bits
 uint32_t RoboCat::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const
 {
 	uint32_t writtenState = 0;
