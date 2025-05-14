@@ -1,3 +1,5 @@
+//Dominik Hampejs D00250604
+//Gracie Chaudhary D00251769
 class DeliveryNotificationManager;
 
 //in case we decide to change the type of the sequence number to use fewer or more bits

@@ -1,3 +1,5 @@
+//Dominik Hampejs D00250604
+//Gracie Chaudhary D00251769
 #define CLASS_IDENTIFICATION(in_code, in_class) \
 enum {kClassId = in_code}; \
 virtual uint32_t GetClassId() const {return kClassId;} \

@@ -1,3 +1,5 @@
+//Dominik Hampejs D00250604
+//Gracie Chaudhary D00251769
 #include "RoboCatPCH.hpp"
 
 void OutputMemoryBitStream::WriteBits(uint8_t inData,

@@ -1,3 +1,5 @@
+//Dominik Hampejs D00250604
+//Gracie Chaudhary D00251769
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX

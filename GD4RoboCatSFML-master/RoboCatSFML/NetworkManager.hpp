@@ -1,3 +1,5 @@
+//Dominik Hampejs D00250604
+//Gracie Chaudhary D00251769
 typedef unordered_map<int, GameObjectPtr> IntToGameObjectMap;
 
 class NetworkManager

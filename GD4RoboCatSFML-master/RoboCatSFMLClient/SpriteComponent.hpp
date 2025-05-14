@@ -1,3 +1,5 @@
+//Dominik Hampejs D00250604
+//Gracie Chaudhary D00251769
 typedef shared_ptr< sf::Texture > TexturePtr;
 typedef shared_ptr<sf::Font> FontPtr;
 

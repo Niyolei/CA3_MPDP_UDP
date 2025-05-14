@@ -1,3 +1,5 @@
+//Dominik Hampejs D00250604
+//Gracie Chaudhary D00251769
 /*
 * the world tracks all the live game objects. Failry inefficient for now, but not that much of a problem
 */
