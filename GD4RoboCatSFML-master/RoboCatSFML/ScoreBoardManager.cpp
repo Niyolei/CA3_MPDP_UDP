@@ -10,10 +10,39 @@ void ScoreBoardManager::StaticInit()
 
 ScoreBoardManager::ScoreBoardManager()
 {
-	mDefaultColors.push_back(Colors::LightYellow);
-	mDefaultColors.push_back(Colors::LightBlue);
-	mDefaultColors.push_back(Colors::LightPink);
-	mDefaultColors.push_back(Colors::LightGreen);
+	mDefaultColors.push_back(Colors::Black);
+	mDefaultColors.push_back(Colors::White);
+	mDefaultColors.push_back(Colors::Red);
+	mDefaultColors.push_back(Colors::Green);
+	mDefaultColors.push_back(Colors::Blue);
+	mDefaultColors.push_back(Colors::Yellow);
+	mDefaultColors.push_back(Colors::Cyan);
+	mDefaultColors.push_back(Colors::Magenta);
+	mDefaultColors.push_back(Colors::Orange);
+
+	mDefaultColors.push_back(Colors::Lime);
+	mDefaultColors.push_back(Colors::Pink);
+	mDefaultColors.push_back(Colors::Purple);
+	mDefaultColors.push_back(Colors::Brown);
+	mDefaultColors.push_back(Colors::SkyBlue);
+	mDefaultColors.push_back(Colors::DarkGreen);
+	mDefaultColors.push_back(Colors::LightGray);
+	mDefaultColors.push_back(Colors::DarkGray);
+	mDefaultColors.push_back(Colors::Gold);
+	mDefaultColors.push_back(Colors::Navy);
+	mDefaultColors.push_back(Colors::Teal);
+
+	mDefaultColors.push_back(Colors::Salmon);
+	mDefaultColors.push_back(Colors::Coral);
+	mDefaultColors.push_back(Colors::Tomato);
+	mDefaultColors.push_back(Colors::Olive);
+	mDefaultColors.push_back(Colors::Aqua);
+	mDefaultColors.push_back(Colors::Indigo);
+	mDefaultColors.push_back(Colors::Plum);
+	mDefaultColors.push_back(Colors::Turquoise);
+	mDefaultColors.push_back(Colors::Mint);
+	mDefaultColors.push_back(Colors::Lavender);
+
 }
 
 ScoreBoardManager::Entry::Entry(uint32_t inPlayerId, const string& inPlayerName, const Vector3& inColor) :
