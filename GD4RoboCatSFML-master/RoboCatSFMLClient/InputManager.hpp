@@ -14,7 +14,7 @@ public:
 
 	void				Update();
 	bool				IsReadyToStartGame() const { return mIsReadyToStartGame; }
-
+	bool mWantsToExit = false;
 private:
 
 	InputState							mCurrentState;
@@ -28,5 +28,6 @@ private:
 	float			mNextTimeToSampleInput;
 	const Move* mPendingMove;
 	bool mIsReadyToStartGame;
+	
 };
 

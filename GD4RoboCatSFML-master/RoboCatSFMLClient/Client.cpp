@@ -54,6 +54,7 @@ void Client::DoFrame()
 	if (NetworkManagerClient::sInstance->HasGameStarted())
 	{
 		Engine::DoFrame();
+
 	}
 
 	NetworkManagerClient::sInstance->ProcessIncomingPackets();
@@ -61,6 +62,8 @@ void Client::DoFrame()
 	RenderManager::sInstance->Render();
 
 	NetworkManagerClient::sInstance->SendOutgoingPackets();
+
+	Engine::SetShouldKeepRunning(!InputManager::sInstance->mWantsToExit);
 }
 
 void Client::HandleEvent(sf::Event& p_event)

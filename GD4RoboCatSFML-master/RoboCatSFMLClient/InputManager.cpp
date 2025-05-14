@@ -62,6 +62,13 @@ void InputManager::HandleInput(EInputAction inInputAction, int inKeyCode)
 			UpdateDesireVariableFromKey(inInputAction, mCurrentState.mIsShooting);
 			AudioManager::sInstance->Play("snowballThrow");
 			break;
+
+		case sf::Keyboard::Escape:
+			mWantsToExit = true;
+			WindowManager::sInstance->close();
+			
+			break;
+
 		case sf::Keyboard::Add:
 		case sf::Keyboard::Equal:
 		{
@@ -95,7 +102,14 @@ void InputManager::HandleInput(EInputAction inInputAction, int inKeyCode)
 			HUD::sInstance->SetGameState(HUD::GameState::WaitingForPlayers);
 			mIsReadyToStartGame = true;
 			break;
+
+		case sf::Keyboard::Escape:
+			WindowManager::sInstance->close();
+			mWantsToExit = true;
+			break;
 		}
+
+		
 
 	}
 }
